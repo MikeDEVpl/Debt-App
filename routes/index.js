@@ -6,4 +6,8 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
+//Route dla sciezki users
+router.get('/users', function(req, res, next) {
+  res.render('index', { title: 'Users' });
+});
 module.exports = router;
