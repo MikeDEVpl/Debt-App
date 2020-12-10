@@ -18,11 +18,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname,'helpers')));
 
 app.use('/', indexRouter);
 app.use('/zdarzenia', usersRouter);
 app.use('/prywatne', usersRouter);
 app.use('/wydatki', usersRouter);
+app.use('/nowy_wydatkek', usersRouter);
+app.use('/nowe_zdarzenie', usersRouter);
+app.use('/nowa_pozyczka', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

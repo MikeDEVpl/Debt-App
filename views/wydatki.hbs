@@ -1,10 +1,21 @@
 <div class="container">
     <div class="row" style="padding-top:20px; padding-bottom:20px">
         <div class="col-md-9">
-            <h1>Moje {{title}}</h1>
+            <h1>{{title}} dla zdarzenia</h1>
         </div>
         <div class="col-md-3">
-            <a class="btn btn-danger">Nowy wydatek</a>
+            <a href="/nowy_wydatek" class="btn btn-danger">Nowy wydatek</a>
         </div>
     </div>
+    <form>
+    <div class="form-group">
+    <label for="buyer">Wybierz Zdarzenie</label>
+    <select class="form-control" id="buyer">
+      <option>Wyjazd</option>
+      <option>Koncert</option>
+      <option>Ryby</option>
+    </select>
+  </div>
+  <button type="submit" class="btn btn-primary">Zakończ</button>
+</form>
 </div>

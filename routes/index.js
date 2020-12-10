@@ -21,4 +21,16 @@ router.get('/wydatki', function(req, res, next) {
   res.render('wydatki', { title: 'Wydatki' });
 });
 
+router.get('/nowe_zdarzenie', function(req, res, next) {
+  res.render('nowe_zdarzenie', { title: 'Nowe Zdarzenie' });
+});
+
+router.get('/nowa_pozyczka', function(req, res, next) {
+  res.render('nowa_pozyczka', { title: 'Nowa Pożyczka' });
+});
+
+router.get('/nowy_wydatek', function(req, res, next) {
+  res.render('nowy_wydatek', { title: 'Nowy wydatek' });
+});
+
 module.exports = router;
