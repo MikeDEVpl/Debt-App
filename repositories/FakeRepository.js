@@ -40,12 +40,14 @@ class Repository{
             {
                 name: 'Stefan',
                 amount: 90.00,
-                returnDate: '2020-12-23'
+                returnDate: '2020-12-23',
+                paid: false
             },
             {
                 name: 'Alojzy',
                 amount: 15.00,
-                returnDate: '2020-11-09'
+                returnDate: '2020-11-09',
+                paid:true
             }
         ];
         return loans;
@@ -57,7 +59,8 @@ class Repository{
             let expenses = [
                 {
                     name: 'Piwo',
-                    cost: 200.00
+                    cost: 200.00,
+                    sponsoredBy:'Jerzy'
                 }
             ];
             return expenses
@@ -67,11 +70,16 @@ class Repository{
             let expenses = [
                 {
                     name: 'Grill',
-                    cost: 75.00
+                    cost: 75.00,
+                    sponsoredBy:'Maciek'
                 }
             ];
             return expenses
         }
+
+    }
+
+    getAllDataForEvent(eventName){
 
     }
 

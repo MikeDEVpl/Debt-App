@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/prywatne');
+var usersRouter = require('./routes/loans');
 
 var app = express();
 
@@ -18,15 +18,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname,'helpers')));
+app.use(express.static(path.join(__dirname,'repositories')));
+app.use(express.static(path.join(__dirname,'logic')));
 
 app.use('/', indexRouter);
-app.use('/zdarzenia', usersRouter);
-app.use('/prywatne', usersRouter);
-app.use('/wydatki', usersRouter);
-app.use('/nowy_wydatkek', usersRouter);
-app.use('/nowe_zdarzenie', usersRouter);
-app.use('/nowa_pozyczka', usersRouter);
+app.use('/events', usersRouter);
+app.use('/loans', usersRouter);
+app.use('/expenses', usersRouter);
+app.use('/newExpense', usersRouter);
+app.use('/newEvent', usersRouter);
+app.use('/newLoan', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

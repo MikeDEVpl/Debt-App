@@ -21,16 +21,8 @@ router.get('/expenses', function(req, res, next) {
   res.render('expenses', { title: 'expenses' });
 });
 
-router.get('/newEvent', function(req, res, next) {
-  res.render('newEvent', { title: 'Nowe Zdarzenie' });
-});
-
 router.get('/newLoan', function(req, res, next) {
   res.render('newLoan', { title: 'Nowa Pożyczka' });
-});
-
-router.get('/newExpense', function(req, res, next) {
-  res.render('newExpense', { title: 'Nowy wydatek' });
 });
 
 module.exports = router;
