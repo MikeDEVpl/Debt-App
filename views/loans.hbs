@@ -10,21 +10,10 @@
 </div>
 
 <div class="container">
-    <table class="table table-stripped table-hover">
-        <tr>
-            <th>Dłużnik</th>
-            <th>Kwota</th>
-            <th>Data Oddania</th>
-            <th>Rozliczenie</th>
-        </th>
-        <tr>
-            <td id="debtor">Heniek</td>
-            <td id="amount">12.00</td>
-            <td id="return-date">2020.12.10</td>
-            <td><a class="btn btn-primary btn-sm">Rozlicz</button></td>
-        </tr>
+    <table id='loans-table' class="table table-stripped table-hover">
+       <thead id="tableHead"></thead>
+       <tbody id="tableBody"></tbody>
     </table>
 </div>
 
 <script src="loansLogic.js"></script>
-
