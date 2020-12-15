@@ -62,7 +62,7 @@ expenses.forEach(element => {
     // div card
     let newCard = document.createElement('div');
     newCard.classList.add("card");
-    newCard.style='width: 8rem';
+    newCard.style='width: 8rem; margin: 20px';
 
     //card body
     let newCardBody=document.createElement('div');
@@ -92,8 +92,5 @@ expenses.forEach(element => {
     newCard.appendChild(newCardBody);
     cardContainer.appendChild(newCard);
 });
-
-
-
 
 

@@ -21,3 +21,14 @@ a {
 ._table-row{
   margin:5px;  
 }
+
+.carousel{
+  margin-top: 50px;
+}
+.carousel-inner{
+  height: 200px;
+}
+.carousel-caption{
+  color: rgb(0, 0, 0);
+  top: 50%;
+}
