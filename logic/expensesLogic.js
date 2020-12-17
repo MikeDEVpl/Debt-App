@@ -34,6 +34,8 @@ let events = [
     }    
 ];
 
+//let expenses = repo.getAllDataForEvent('Wyjazd');
+
 let expenses = [
     {
         name: 'Piwo',
@@ -45,52 +47,79 @@ let expenses = [
         sponsoredBy:'Maciek'
     }];
     
-let selectEvent = document.getElementById("selectEvent");
+// let selectEvent = document.getElementById("selectEvent");
 
-events.forEach(element => {
-    let newOption=document.createElement('option');
-    newOption.appendChild(document.createTextNode(element.name));
-    newOption.value=element.name;
-    selectEvent.appendChild(newOption);
-});
+// events.forEach(element => {
+//     let newOption=document.createElement('option');
+//     newOption.appendChild(document.createTextNode(element.name));
+//     newOption.value=element.name;
+//     selectEvent.appendChild(newOption);
+// });
+
+//Main div
+let timelineMainDiv= document.getElementById('timelineMainDiv');
 
 
-//Tworzenie kart dla expense
-let cardContainer=document.getElementById("cardContainer");
-
+//Display logic
+var count = 0;
 expenses.forEach(element => {
-    // div card
-    let newCard = document.createElement('div');
-    newCard.classList.add("card");
-    newCard.style='width: 8rem; margin: 20px';
+    let newLi = document.createElement('li');
 
-    //card body
-    let newCardBody=document.createElement('div');
-    newCardBody.classList.add('card-body');
+    newLi.classList.add(count %2 ? 'timeline' : 'timeline-inverted');
+    count +=1;
+
+    let newDivLogo = document.createElement("div");
+    newDivLogo.classList.add('timeline-image');
+    let newImg = document.createElement('img');
+    newImg.src = "/images/expenses/1.jpg";
+    newImg.alt ="";
+    newImg.classList.add('rounded-circle', 'img-fluid');
+
+    let newDivPanel= document.createElement('div');
+    newDivPanel.classList.add('timeline-panel');
+
+    let newDivHeading = document.createElement('div');
+    newDivHeading.classList.add('timeline-heading');
     
-    //card title
-    let newCardTitle = document.createElement('h5');
-    newCardTitle.appendChild(document.createTextNode(element.name));
-    newCardTitle.classList.add('card-title');
+    let newH4_1 = document.createElement('h4');
+    newH4_1.innerHTML=element.cost;
+    
+    let newH4_2 = document.createElement('h4');
+    newH4_2.classList.add('subheading');
+    newH4_2.innerHTML = element.name;
 
-    //card-text
-    let newCardText = document.createElement('p');
-    newCardText.appendChild(document.createTextNode(element.sponsoredBy));
-    newCardText.classList.add('card-text');
+    let newDivBody = document.createElement('div');
+    newDivBody.classList.add('timeline-body');
 
-    //card button
-    let newCardButton = document.createElement('a');
-    newCardButton.classList.add('btn');
-    newCardButton.classList.add('btn-primary');
-    newCardButton.appendChild(document.createTextNode(element.cost));
+    let newP = document.createElement('p');
+    newP.classList.add('text-muted');
+    newP.innerHTML = 'Sponsored by: ' + element.sponsoredBy;
 
+    newDivLogo.appendChild(newImg);
+    newDivHeading.appendChild(newH4_1);
+    newDivHeading.appendChild(newH4_2);
+    newDivPanel.appendChild(newDivHeading);
+    newDivPanel.appendChild(newDivBody);
+    newDivBody.appendChild(newP);
+    
 
-    newCardBody.appendChild(newCardTitle);
-    newCardBody.appendChild(newCardText);
-    newCardBody.appendChild(newCardButton);
+    newLi.appendChild(newDivLogo);
+    newLi.appendChild(newDivPanel);
 
-    newCard.appendChild(newCardBody);
-    cardContainer.appendChild(newCard);
+    timelineMainDiv.appendChild(newLi);
 });
 
+
+//new expense circle
+let newLiFooter = document.createElement('li');
+newLiFooter.classList.add('timeline-inverted');
+
+let newDivFooter = document.createElement("div");
+newDivFooter.classList.add('timeline-image');
+let newH4 = document.createElement('h4');
+newH4.innerHTML= 'Add' + '<br />' + 'new' + '<br/>' + 'expenses';
+
+newDivFooter.appendChild(newH4);
+newLiFooter.appendChild(newDivFooter);
+timelineMainDiv.appendChild(newLiFooter);
 
