@@ -83,6 +83,18 @@ class Repository{
 
     }
 
+    newLoan(){
+
+    }
+
+    newEvent(){
+
+    }
+
+    newExpense(){
+        
+    }
+
 };
 
 const repo = new Repository();

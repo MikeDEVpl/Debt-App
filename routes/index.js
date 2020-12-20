@@ -1,24 +1,35 @@
 var express = require('express');
 var router = express.Router();
+const ObjectId = require('mongodb').ObjectId;
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'DebtApp' });
-});
+router.get('/index', async function(req, res, next) {
 
-//Route dla sciezki events
-router.get('/events', function(req, res, next) {
-  res.render('events', { title: 'events' });
-});
+  const id = req.query.id;
+  const loans = await req.db.db('debtapp')
+             .collection('loans')
+             .find({})            
+             .collation({
+               locale: 'pl'
+             })
+             .sort(['name', 1]).toArray();
 
-//Route dla sciezki loans
-router.get('/loans', function(req, res, next) {
-  res.render('loans', { title: 'loans' });
-});
+  const events = await req.db.db('debtapp')
+             .collection('events')
+             .find({})            
+             .collation({
+               locale: 'pl'
+             })
+             .sort(['name', 1]).toArray();
 
-//Route dla sciezki expenses
-router.get('/expenses', function(req, res, next) {
-  res.render('expenses', { title: 'expenses' });
+  const expenses = await req.db.db('debtapp')
+             .collection('expenses')
+             .find({})            
+             .collation({
+               locale: 'pl'
+             })
+             .sort(['name', 1]).toArray();
+  
+  res.render('index', { title: 'DebtApp', loans: loans, events: events, expenses:expenses });
 });
 
 router.get('/newEvent', function(req, res, next) {
