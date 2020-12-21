@@ -5,14 +5,39 @@ const ObjectId = require('mongodb').ObjectId;
 
 //Get all for index page
 router.get('/index/', async function(req, res, next) {
+  const pageSize = 2;
+  let sort = parseInt(req.query.sort);
+  sort = sort ? sort : 1;
+  let search = req.query.search;
+  let querySearch = search ?
+  {
+    name:
+      {$regex: search, $options: 'i'}
+  }
+
+  : {};
+
+  const count = await req.db.db('debtapp')
+    .collection('loans')
+    .countDocuments(querySearch);
+
+  const maxPage = Math.floor(count / pageSize);
+  let page = parseInt(req.query.page);
+  page = page >= 0 ? page : 0;
+  page = page <= maxPage ? page : maxPage;
+  const prevPage = page > 0 ? page - 1 : 0;
+  const nextPage = page < maxPage ? page + 1 : maxPage;
 
   const loans = await req.db.db('debtapp')
              .collection('loans')
-             .find({})            
+             .find(querySearch)            
              .collation({
                locale: 'pl'
              })
-             .sort(['name', 1]).toArray();
+             .sort(['name', sort])
+             .skip(page * pageSize)
+             .limit(pageSize)
+             .toArray();
 
   const events = await req.db.db('debtapp')
              .collection('events')
@@ -34,7 +59,12 @@ router.get('/index/', async function(req, res, next) {
     { title: 'DebtApp', 
     loans: loans, 
     events: events, 
-    expenses: expenses });
+    expenses: expenses,
+    sort: sort,
+    page: page,
+    prevPage: prevPage,
+    nextPage: nextPage,
+    count: count });
 });
 
 /* GET loan */

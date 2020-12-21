@@ -34,6 +34,21 @@
                     <h2 class="section-heading text-uppercase">Loans</h2>
                     <h3 class="section-subheading text-muted">Let's see your loans.</h3>
                 </div>
+                <div id='search-controls'>
+                    <form action="/index/" method="GET">
+                        <label>Wpisz frazę</label>
+                        <input type="text" name="search" />
+                        <input type="hidden" name="sort" values="{{sort}}" /> 
+                        <input type="submit" value="Szukaj"/>
+                    </form>
+                </div>
+                <div id='page-controls'>
+                    <a href="?sort=1">A-Z</a>
+                    <a href="?sort=-1">Z-A</a>
+                    <a href="?sort={{sort}}&page={{prevPage}}">&lt;&lt;</a>
+                    <a href="?sort={{sort}}&page={{nextPage}}">&gt;&gt;</a>
+                    <p>Page {{page}} of {{count}}</p>
+                </div>
                 <div class="row text-center" id="loansMainDiv">
                     {{#each loans}}
                         <div class="col-md-4">
