@@ -1,3 +1,4 @@
+<header class="masthead">
 <!-- loans section-->
 <section class="page-section" id="loans">
     <div class="container">
@@ -5,21 +6,15 @@
             <h2 class="section-heading text-uppercase">Loans</h2>
             <h3 class="section-subheading text-muted">Let's see your loans.</h3>
         </div>
-        <div id='search-controls'>
-            <form action="/index/" method="GET">
-                <label>Wpisz frazę</label>
-                <input type="text" name="search" />
+
+        <div id='search-controls' >
+            <form action="/loans/" method="GET" class="input-group input-group mb-3 ">
+                <input type="text" name="search" class="form-control" />
                 <input type="hidden" name="sort" values="{{sort}}" />
-                <input type="submit" value="Szukaj" />
+                <input type="submit" class="btn btn-outline-secondary" value="Search" />
             </form>
         </div>
-        <div id='page-controls'>
-            <a href="?sort=1">A-Z</a>
-            <a href="?sort=-1">Z-A</a>
-            <a href="?sort={{sort}}&page={{prevPage}}">&lt;&lt;</a>
-            <a href="?sort={{sort}}&page={{nextPage}}">&gt;&gt;</a>
-            <p>Page {{page}} of {{count}}</p>
-        </div>
+
         <div class="row text-center" id="loansMainDiv">
             {{#each loans}}
             <div class="col-md-4">
@@ -29,10 +24,19 @@
                 </span>
                 <h4 class='my-3'>{{name}} | {{amount}} zł</h4>
                 <p class='text-muted'>{{returnDate}} | {{paid}}</p>
-                <a class="btn btn-secondary" href="newLoan/?id={{this._id}}">Edit</a>
+                <a class="btn btn-info" href="newLoan/?id={{this._id}}">Edit</a>
                 <a class="btn btn-danger" href="loan-delete/?id={{this._id}}">Delete</a>
             </div>
             {{/each}}
         </div>
+        <div id='page-controls' class="text-center">
+            <a class="btn btn-primary btn-sm" href="?sort=1">A-Z</a>
+            <a class="btn btn-primary btn-sm" href="?sort=-1">Z-A</a>
+            <a class="btn btn-primary btn-sm" href="?sort={{sort}}&page={{prevPage}}">&lt;&lt;</a>
+            <a class="btn btn-primary btn-sm" href="?sort={{sort}}&page={{nextPage}}">&gt;&gt;</a>
+            <div class="text-muted" id="page-summary">Page {{page}} of {{maxPage}} found {{count}} records</div>
+        </div>
+        
     </div>
 </section>
+</header>

@@ -2,10 +2,9 @@ var express = require('express');
 var router = express.Router();
 const ObjectId = require('mongodb').ObjectId;
 
-
-//Get all for index page
-router.get('/index/', async function(req, res, next) {
-  const pageSize = 2;
+//Get LOANS page
+router.get('/loans/', async function(req, res, next) {
+  const pageSize = 3;
   let sort = parseInt(req.query.sort);
   sort = sort ? sort : 1;
   let search = req.query.search;
@@ -14,7 +13,6 @@ router.get('/index/', async function(req, res, next) {
     name:
       {$regex: search, $options: 'i'}
   }
-
   : {};
 
   const count = await req.db.db('debtapp')
@@ -38,36 +36,111 @@ router.get('/index/', async function(req, res, next) {
              .skip(page * pageSize)
              .limit(pageSize)
              .toArray();
-
-  const events = await req.db.db('debtapp')
-             .collection('events')
-             .find({})            
-             .collation({
-               locale: 'pl'
-             })
-             .sort(['name', 1]).toArray();
-
-  const expenses = await req.db.db('debtapp')
-             .collection('expenses')
-             .find({})            
-             .collation({
-               locale: 'pl'
-             })
-             .sort(['name', 1]).toArray();
-  
-  res.render('index', 
+   
+  res.render('loans', 
     { title: 'DebtApp', 
     loans: loans, 
-    events: events, 
-    expenses: expenses,
     sort: sort,
     page: page,
     prevPage: prevPage,
     nextPage: nextPage,
+    maxPage: maxPage,
     count: count });
 });
 
-/* GET loan */
+//GET EVENTS page
+router.get('/events/', async function(req, res, next) {
+  const pageSize = 3;
+  let sort = parseInt(req.query.sort);
+  sort = sort ? sort : 1;
+  let search = req.query.search;
+  let querySearch = search ?
+  {
+    name:
+      {$regex: search, $options: 'i'}
+  }
+  : {};
+
+  const count = await req.db.db('debtapp')
+    .collection('events')
+    .countDocuments(querySearch);
+
+  const maxPage = Math.floor(count / pageSize);
+  let page = parseInt(req.query.page);
+  page = page >= 0 ? page : 0;
+  page = page <= maxPage ? page : maxPage;
+  const prevPage = page > 0 ? page - 1 : 0;
+  const nextPage = page < maxPage ? page + 1 : maxPage;
+
+  const events = await req.db.db('debtapp')
+             .collection('events')
+             .find(querySearch)            
+             .collation({
+               locale: 'pl'
+             })
+             .sort(['name', sort])
+             .skip(page * pageSize)
+             .limit(pageSize)
+             .toArray();
+   
+  res.render('events', 
+    { title: 'DebtApp', 
+    events: events, 
+    sort: sort,
+    page: page,
+    prevPage: prevPage,
+    nextPage: nextPage,
+    maxPage: maxPage,
+    count: count });
+});
+
+//Get Expenses page
+router.get('/expenses/', async function(req, res, next) {
+  const pageSize = 3;
+  let sort = parseInt(req.query.sort);
+  sort = sort ? sort : 1;
+  let search = req.query.search;
+  let querySearch = search ?
+  {
+    name:
+      {$regex: search, $options: 'i'}
+  }
+  : {};
+
+  const count = await req.db.db('debtapp')
+    .collection('expenses')
+    .countDocuments(querySearch);
+
+  const maxPage = Math.floor(count / pageSize);
+  let page = parseInt(req.query.page);
+  page = page >= 0 ? page : 0;
+  page = page <= maxPage ? page : maxPage;
+  const prevPage = page > 0 ? page - 1 : 0;
+  const nextPage = page < maxPage ? page + 1 : maxPage;
+
+  const expenses = await req.db.db('debtapp')
+             .collection('expenses')
+             .find(querySearch)            
+             .collation({
+               locale: 'pl'
+             })
+             .sort(['name', sort])
+             .skip(page * pageSize)
+             .limit(pageSize)
+             .toArray();
+   
+  res.render('expenses', 
+    { title: 'DebtApp', 
+    expenses: expenses, 
+    sort: sort,
+    page: page,
+    prevPage: prevPage,
+    nextPage: nextPage,
+    maxPage: maxPage,
+    count: count });
+});
+
+/* GET single loan */
 router.get('/newLoan/', async function(req, res, next) {
   const id = req.query.id;
   let newLoan;
@@ -86,8 +159,7 @@ router.get('/newLoan/', async function(req, res, next) {
   res.render('newLoan', { title: 'New/Edit loan', newLoan: newLoan });
 });
 
-
-/* POST loan */
+/* POST single loan */
 router.post('/newLoan/', async function (req, res, next) {
   try {
     let newLoan = {
@@ -103,7 +175,7 @@ router.post('/newLoan/', async function (req, res, next) {
     } else {
       await req.db.db('debtapp').collection("loans").insertOne(newLoan);
     }
-    res.redirect('/index/');
+    res.redirect('/loans/');
   } catch (err) {
     console.error(err);
   }
@@ -115,7 +187,7 @@ router.get('/loan-delete/', async function (req, res, next) {
   try {
       let id = req.query.id;
       await req.db.db('debtapp').collection("loans").findOneAndDelete({_id: ObjectId(id)});
-      res.redirect('/index/');
+      res.redirect('/loans/');
   } catch (err) {
       console.error(err);
   }
@@ -134,6 +206,20 @@ router.get('/newExpense/', function(req, res, next) {
   res.render('newExpense', { title: 'Nowy wydatek' });
 });
 
+router.get('/events/', function(req, res, next) {
+  res.render('events', { title: 'Events' });
+});
 
+router.get('/loans/', function(req, res, next) {
+  res.render('loans', { title: 'Loans' });
+});
+
+router.get('/expenses/', function(req, res, next) {
+  res.render('expenses', { title: 'Expenses' });
+});
+
+router.get('/index/', async function(req, res, next) {
+  res.render('index', { title: 'DebtApp'});
+});
 
 module.exports = router;

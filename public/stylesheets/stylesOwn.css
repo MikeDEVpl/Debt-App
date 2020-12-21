@@ -45,3 +45,7 @@ a {
   font-variant: small-caps;
   text-transform: capitalize;
   }
+
+  #page-controls{
+    margin-top: 20px;
+  }

@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-//var usersRouter = require('./routes/loans');
+//var loansRouter = require('./routes/loans');
 var db = require('./db');
 
 db.connect();
@@ -32,7 +32,7 @@ app.use(function(req, res, next) {
 app.use('/', indexRouter);
 app.use('/index', indexRouter);
 //app.use('/events', usersRouter);
-//app.use('/loans', usersRouter);
+app.use('/loans', indexRouter);
 //app.use('/expenses', usersRouter);
 app.use('/newExpense', indexRouter);
 app.use('/newEvent', indexRouter);
