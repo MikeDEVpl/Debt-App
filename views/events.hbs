@@ -1,37 +1,109 @@
-<div class="container">
-    <div class="row" style="padding-top:20px; padding-bottom:20px">
-        <div class="col-md-9">
-            <h1>Moje {{title}}</h1>
-        </div>
-        <div class="col-md-3">
-            <a href="/newEvent" class="btn btn-danger">Nowe Zdarzenie</a>
-        </div>
+<!-- events Grid-->
+<section class="page-section bg-light" id="events">
+  <div class="container">
+    <div class="text-center">
+      <h2 class="section-heading text-uppercase">Events</h2>
+      <h3 class="section-subheading text-muted">You are participating in those events</h3>
     </div>
-</div>
-
-<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <div class="carousel-caption">
-        <h3>Koncert</h3>
-        <p>Marek, Janusz, Artur</p>
-        <p>W trakcie</p>
+    <div class="row">
+      <div class="col-lg-4 col-sm-6 mb-4">
+        <div class="events-item">
+          <a class="events-link" data-toggle="modal" href="#eventsModal1">
+            <div class="events-hover">
+              <div class="events-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+            </div>
+            <img class="img-fluid" src="/images/events/01-thumbnail.jpg" alt="" />
+          </a>
+          <div class="events-caption">
+            <div class="events-caption-heading">Threads</div>
+            <div class="events-caption-subheading text-muted">Illustration</div>
+          </div>
+        </div>
+      </div>
+      {{#each events}}
+      <div class="col-lg-4 col-sm-6 mb-4 mb-lg-0">
+        <div class="events-item">
+          <a class="events-link" data-toggle="modal" href="#eventsModal4">
+            <div class="events-hover">
+              <div class="events-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+            </div>
+            <img class="img-fluid" src="/images/events/04-thumbnail.jpg" alt="" />
+          </a>
+          <div class="events-caption">
+            <div class="events-caption-heading">{{name}}</div>
+            <div class="events-caption-subheading text-muted">{{date}}</div>
+          </div>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+</section>
+<!-- events Modals-->
+<!-- Modal 1-->
+<div class="events-modal modal fade" id="eventsModal1" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="close-modal" data-dismiss="modal"><img src="/images/close-icon.svg" alt="Close modal" /></div>
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div class="modal-body">
+              <!-- Project Details Go Here-->
+              <h2 class="text-uppercase">Project Name</h2>
+              <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
+              <img class="img-fluid d-block mx-auto" src="/images/events/01-full.jpg" alt="" />
+              <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est
+                blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia
+                expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
+              <ul class="list-inline">
+                <li>Date: January 2020</li>
+                <li>Client: Threads</li>
+                <li>Category: Illustration</li>
+              </ul>
+              <button class="btn btn-primary" data-dismiss="modal" type="button">
+                <i class="fas fa-times mr-1"></i>
+                Close Project
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="carousel-item">
-      <div class="carousel-caption">
-        <h3>Wyjazd</h3>
-        <p>Stefan, Roman, Grzegorz</p>
-        <p>Zakonczone</p>
-      </div>
-    </div>    
-  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="sr-only">Previous</span>
-  </a>
-  <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="sr-only">Next</span>
-  </a>
+  </div>
 </div>
+<!-- Modal 2-->
 
+{{#each events}}
+<div class="events-modal modal fade" id="eventsModal2" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="close-modal" data-dismiss="modal"><img src="/images/close-icon.svg" alt="Close modal" /></div>
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div class="modal-body">
+              <!-- Project Details Go Here-->
+              <h2 class="text-uppercase">{{name}}</h2>
+              <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
+              <img class="img-fluid d-block mx-auto" src="/images/events/02-full.jpg" alt="" />
+              <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est
+                blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia
+                expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
+              <ul class="list-inline">
+                <li>Date: {{date}} </li>
+                <li>Client: {{participants}}</li>
+                <li>Category: Graphic Design</li>
+              </ul>
+              <button class="btn btn-primary" data-dismiss="modal" type="button">
+                <i class="fas fa-times mr-1"></i>
+                Close Project
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{{/each}}

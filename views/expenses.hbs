@@ -1,23 +1,26 @@
-<div class="container">
-    <div class="row" style="padding-top:20px; padding-bottom:20px">
-        <div class="col-md-9">
-            <h1>{{title}} dla events</h1>
+<!-- expenses-->
+<section class="page-section" id="expenses">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="section-heading text-uppercase">Expenses</h2>
+            <h3 class="section-subheading text-muted">Check expenses on participated events.</h3>
         </div>
-        <div class="col-md-3">
-            <a href="/newExpense" class="btn btn-danger">Nowy wydatek</a>
-        </div>
+        <ul class="timeline" id="timelineMainDiv">
+            {{#each expenses}}
+            <li>
+                <div class="timeline-image"><img class="rounded-circle img-fluid" src="assets/img/about/1.jpg" alt="" />
+                </div>
+                <div class="timeline-panel">
+                    <div class="timeline-heading">
+                        <h4>{{cost}}</h4>
+                        <h4 class="subheading">{{name}}</h4>
+                    </div>
+                    <div class="timeline-body">
+                        <p class="text-muted">Sponsored by: {{sponsoredBy}}</p>
+                    </div>
+                </div>
+            </li>
+            {{/each}}
+        </ul>
     </div>
-    <form>
-    <div id="formBody" class="form-group">
-        <label for="selectEvent">Wybierz Zdarzenie</label>
-        <select class="form-control" id="selectEvent"></select>
-        <button type="submit" class="btn btn-primary">Zakończ</button>
-    </div>
-
-    <div id="cardContainer" class="container">
-        
-    </div>
-</form>
-</div>
-
-<script src="expensesLogic.js"></script>
+</section>
