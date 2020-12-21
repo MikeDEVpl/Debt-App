@@ -1,17 +1,19 @@
 <header class="masthead">
-<form action="/loan" method="post">
+<form action="/newLoan/" method="post">
   <div class="form-group">
-    <label for="debtor">Dłużnik</label>
-    <input type="text" class="form-control" id="debtor" placeholder="Nazwa dłużnika">    
+    <label for="name">Dłużnik</label>
+    <input type="text" class="form-control" id="name" name="name" value="{{newLoan.name}}" placeholder="Nazwa dłużnika">    
   </div>
   <div class="form-group">
     <label for="amount">Kwota</label>
-    <input type="text" class="form-control" id="amount" placeholder="Kwota pożyczki">    
+    <input type="text" class="form-control" id="amount" name="amount" value="{{newLoan.amount}}" placeholder="Kwota pożyczki">    
   </div>
    <div class="form-group">
     <label for="returnDate">Kwota</label>
-    <input type="date" class="form-control" id="returnDate" placeholder="Data zwrotu">    
+    <input type="date" class="form-control" id="returnDate" name="returnDate" value="{{newLoan.returnDate}}" placeholder="Data zwrotu">    
   </div>
-  <button type="submit" class="btn btn-primary">Zakończ</button>
+  <input type="hidden" type="text" name="_id" value="{{newLoan._id}}"/>
+  <input type="submit" class="btn btn-primary" value="Zakończ">
 </form>
+<a class="btn btn-primary" href="/index/">Powrót </a>
 </header>

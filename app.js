@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/loans');
+//var usersRouter = require('./routes/loans');
 var db = require('./db');
 
 db.connect();
@@ -30,12 +30,13 @@ app.use(function(req, res, next) {
 });
 
 app.use('/', indexRouter);
-app.use('/events', usersRouter);
-app.use('/loans', usersRouter);
-app.use('/expenses', usersRouter);
-app.use('/newExpense', usersRouter);
-app.use('/newEvent', usersRouter);
-app.use('/newLoan', usersRouter);
+app.use('/index', indexRouter);
+//app.use('/events', usersRouter);
+//app.use('/loans', usersRouter);
+//app.use('/expenses', usersRouter);
+app.use('/newExpense', indexRouter);
+app.use('/newEvent', indexRouter);
+app.use('/newLoan', indexRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
