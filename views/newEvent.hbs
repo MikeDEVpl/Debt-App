@@ -1,17 +1,21 @@
 <header class="masthead">
-<form>
+<form action="/newEvent/" method="post">
   <div class="form-group">
-    <label for="eventName">Nazwa events</label>
-    <input type="text" class="form-control" id="eventName" placeholder="Wprowadz nazwę events">
-    <small id="eventHelp" class="form-text text-muted">Na następnym ekranie będziesz mógł dodać uczestników</small>
+    <label for="eventName">Event name</label>
+    <input type="text" class="form-control" name="name" id="name" value="{{newEvent.name}}" placeholder="Enter event name">
+    <small id="eventHelp" class="form-text text-muted">Event name</small>
+  </div>
+    <div class="form-group">
+    <label for="returnDate">Event date</label>
+    <input type="date" class="form-control" id="date" name="date" value="{{newEvent.date}}" placeholder="Data zwrotu">    
   </div>
   <div class="form-group">
-    <label for="participant">Uczestnik</label>
-    <input type="text" class="form-control" id="participant" placeholder="Wprowadz Uczestnika">
-    <small id="participantHelp" class="form-text text-muted">Dodaj ilu chcesz uczestników events</small>
-  </div>
-  <button class= "btn btn-secondary">Dodaj kolejny</button>
-  <button type="submit" class="btn btn-primary">Dalej</button>
-  tutaj js ktory dodaje dynamicznie nastepne pole formularza po kliknieciu dodaj kolejny - jak da rade
+    <label for="participant">Participants</label>
+    <input type="text" class="form-control" name="participants" id="participants" value="{{newEvent.participants}}" placeholder="Enter names separated by comas">
+    <small id="participantHelp" class="form-text text-muted">Add event participants</small>
+  </div>  
+  <input type="hidden" type="text" name="_id" value="{{newEvent._id}}"/>
+  <button type="submit" class="btn btn-primary">Add event</button>
 </form>
+<a class="btn btn-primary" href="/events/">Powrót </a>
 </div>

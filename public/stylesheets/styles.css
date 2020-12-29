@@ -10162,6 +10162,7 @@ header.masthead .masthead-heading {
   max-width: 25rem;
   margin-left: auto;
   margin-right: auto;
+  background-color: gray;
 }
 #events .events-item .events-link {
   position: relative;
@@ -10196,6 +10197,7 @@ header.masthead .masthead-heading {
   font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-weight: 700;
   margin-bottom: 0;
+  color: black;
 }
 #events .events-item .events-caption .events-caption-subheading {
   font-style: italic;

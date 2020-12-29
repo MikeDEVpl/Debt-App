@@ -1,30 +1,24 @@
 <header class="masthead">
-<form>
+<form action="/newExpense/" method="post">
     <div class="form-group">
-    <label for="buyer">Zdarzenie</label>
-    <select class="form-control" id="buyer">
-      <option>Wyjazd</option>
-      <option>Koncert</option>
-      <option>Ryby</option>
-    </select>
+    <label for="eventNames">Event</label>
+    <input class="form-control" type="text" name="event" value="{{newExpense.event}}" id="event"/>
   </div>
   <div class="form-group">
-    <label for="expense">Wydatek</label>
-    <input type="text" class="form-control" id="expense" placeholder="Nazwa wydatku">    
+    <label for="expense">Expense</label>
+    <input type="text" class="form-control" value="{{newExpense.name}}" name="name" id="name" placeholder="Expense name">    
   </div>
   <div class="form-group">
-    <label for="expenseAmount">Kwota</label>
-    <input type="text" class="form-control" id="ExpenseAmount" placeholder="Kwota">    
+    <label for="expenseAmount">Cost</label>
+    <input type="text" class="form-control"  value="{{newExpense.cost}}" name="cost" id="cost" placeholder="Kwota">    
   </div>
   <div class="form-group">
-    <label for="buyer">Kto sponsoruje?</label>
-    <select class="form-control" id="buyer">
-      <option>Stefan</option>
-      <option>Roman</option>
-      <option>Zdzich</option>
-    </select>
+    <label for="buyer">Who's sponsoring</label>
+    <input type="text" class="form-control"  value="{{newExpense.sponsoredBy}}" name="sponsoredBy" id="sponsoredBy" />
   </div>
 
+  <input type="hidden" type="text" name="_id" value="{{newExpense._id}}"/>
   <button type="submit" class="btn btn-primary">Zakończ</button>
 </form>
+<a class="btn btn-primary" href="/expenses/">Powrót </a>
 </header>

@@ -98,3 +98,9 @@ class Repository{
 };
 
 const repo = new Repository();
+
+
+//array.forEach(element => {
+    
+//});
+

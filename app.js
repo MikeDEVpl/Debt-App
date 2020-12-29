@@ -31,9 +31,9 @@ app.use(function(req, res, next) {
 
 app.use('/', indexRouter);
 app.use('/index', indexRouter);
-//app.use('/events', usersRouter);
+app.use('/events', indexRouter);
 app.use('/loans', indexRouter);
-//app.use('/expenses', usersRouter);
+app.use('/expenses', indexRouter);
 app.use('/newExpense', indexRouter);
 app.use('/newEvent', indexRouter);
 app.use('/newLoan', indexRouter);
