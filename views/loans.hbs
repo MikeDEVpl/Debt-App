@@ -18,12 +18,19 @@
         <div class="row text-center" id="loansMainDiv">
             {{#each loans}}
             <div class="col-md-4">
+
                 <span class="fa-stack fa-4x">
                     <i class="fas fa-circle fa-stack-2x text-primary "></i>
-                    <i class="fas fa-shopping-cart fa-stack-1x fa-inverse"></i>
+                    <i class="fas fa-money-check-alt fa-stack-1x fa-inverse"></i>
                 </span>
+
+                <span id="paidInd" style="display:none">
+                    Paid
+                </span>
+       
                 <h4 class='my-3'>{{name}} | {{amount}} zł</h4>
-                <p class='text-muted'>{{returnDate}} | {{paid}}</p>
+                <p class='text-muted'>{{returnDate}}</p>
+                <p id="paidHidden" style="display:none">{{paid}}</p>
                 <a class="btn btn-info" href="newLoan/?id={{this._id}}">Edit</a>
                 <a class="btn btn-danger" href="loan-delete/?id={{this._id}}">Delete</a>
             </div>
@@ -31,13 +38,23 @@
         </div>
         
         <div id='page-controls' class="text-center">
-            <a class="btn btn-primary btn-sm" href="?sort=1">A-Z</a>
-            <a class="btn btn-primary btn-sm" href="?sort=-1">Z-A</a>
-            <a class="btn btn-primary btn-sm" href="?sort={{sort}}&page={{prevPage}}">&lt;&lt;</a>
-            <a class="btn btn-primary btn-sm" href="?sort={{sort}}&page={{nextPage}}">&gt;&gt;</a>
+            <a class="btn btn-primary btn-sm text-black-50" href="?sort=1">A-Z</a>
+            <a class="btn btn-primary btn-sm text-black-50" href="?sort=-1">Z-A</a>
+            <a class="btn btn-primary btn-sm text-black-50" href="?sort={{sort}}&page={{prevPage}}">&lt;&lt;</a>
+            <a class="btn btn-primary btn-sm text-black-50" href="?sort={{sort}}&page={{nextPage}}">&gt;&gt;</a>
             <div class="text-muted" id="page-summary">Page {{page}} of {{maxPage}} found {{count}} records</div>
         </div>
         
     </div>
 </section>
 </header>
+
+
+
+<script>
+    //takie wolanie bierze dlajednego obiektu musi byc jakas petla dla wszystkich
+
+  document.addEventListener("DOMContentLoaded", function(){
+    setPaid();
+});
+</script>

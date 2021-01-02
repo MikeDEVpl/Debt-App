@@ -54,3 +54,82 @@
     // Collapse the navbar when page is scrolled
     $(window).scroll(navbarCollapse);
 })(jQuery); // End of use strict
+
+function selEvnt() {
+    var eventReadonlyInput = document.getElementById("event");
+    eventReadonlyInput.value = selectEvent.value;
+
+    var participantsTagTempInput = document.getElementById("participants");
+    var currentParticipants = document.getElementById(selectEvent.value + '-participants').value;
+    participantsTagTempInput.value = currentParticipants;
+
+    var selectBuyerTag = document.getElementById("selectBuyer");
+    var arr = currentParticipants.split(',');
+
+    while (selectBuyerTag.firstChild){
+        selectBuyerTag.removeChild(selectBuyerTag.firstChild);
+    }
+
+    arr.forEach(element => {
+       let newOption = document.createElement("option");
+       newOption.innerText = element;
+       selectBuyerTag.appendChild(newOption);
+    });
+
+}
+
+function selBuyer(){
+    var buyerReadonlyInput = document.getElementById("sponsoredBy");
+    buyerReadonlyInput.value = selectBuyer.value;
+}
+
+function fillFields(){
+
+    var eventReadonlyTag = document.getElementById("event");
+ 
+    if(eventReadonlyTag.value != ''){
+        var currentParticipants = document.getElementById(eventReadonlyTag.value + '-participants').value;
+    
+        var selectBuyerTag = document.getElementById("selectBuyer");
+        var arr = currentParticipants.split(',');
+        alert(arr);
+
+        while (selectBuyerTag.firstChild){
+            selectBuyerTag.removeChild(selectBuyerTag.firstChild);
+        }
+
+        arr.forEach(element => {
+        let newOption = document.createElement("option");
+        newOption.innerText = element;
+        selectBuyerTag.appendChild(newOption);
+        });
+    }
+
+}
+
+function setCheckboxes(){
+   var hiddenInput = document.getElementById("paidHidden");
+   var yesCheckbox = document.getElementById("paidYes");
+   var noCheckbox = document.getElementById("paidNo");
+
+   if(hiddenInput.value == "false"){
+    noCheckbox.checked = true;
+    yesCheckbox.checked = false;
+   }
+
+   if(hiddenInput.value == "true"){
+    yesCheckbox.checked=true;
+    noCheckbox.checked=false;
+   }
+}
+
+//zle bo bierze tylko dla jednego obiektu
+function setPaid(){
+    var paidInd = document.getElementById("paidInd");
+    var hiddenInput = document.getElementById("paidHidden");
+    alert(hiddenInput.innerHTML);
+
+    if(hiddenInput.innerHTML == "true"){
+        paidInd.show();
+    }
+}

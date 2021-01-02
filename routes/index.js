@@ -195,6 +195,7 @@ router.get('/newEvent/', async function(req, res, next) {
 router.get('/newExpense/', async function(req, res, next) {
   const id = req.query.id;
   let newExpense;
+  let events;
   if (id) {
       newExpense = await req.db.db('debtapp')
           .collection('expenses')
@@ -207,7 +208,19 @@ router.get('/newExpense/', async function(req, res, next) {
       sponsoredBy:""
     };
   }
-  res.render('newExpense', { title: 'New/Edit event', newExpense: newExpense });
+
+  events = await req.db.db('debtapp')
+  .collection('events')
+  .find()            
+  .collation({
+    locale: 'pl'
+  })
+  .sort()
+  .toArray();
+  
+  res.render('newExpense', { title: 'New/Edit event', 
+    newExpense: newExpense, 
+    events: events });
 });
 
 /* POST single loan */
@@ -218,7 +231,7 @@ router.post('/newLoan/', async function (req, res, next) {
       name: req.body.name,
       amount: req.body.amount,
       returnDate: req.body.returnDate,
-      paid: false
+      paid: req.body.paid
     };
 
     if (newLoan._id) {

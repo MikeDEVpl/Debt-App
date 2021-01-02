@@ -1,19 +1,38 @@
 <header class="masthead">
 <form action="/newLoan/" method="post">
+
   <div class="form-group">
     <label for="name">Debtor</label>
-    <input type="text" class="form-control" id="name" name="name" value="{{newLoan.name}}" placeholder="Nazwa dłużnika">    
+    <input type="text" class="form-control" id="name" name="name" value="{{newLoan.name}}" placeholder="Debtor name">    
   </div>
+  
   <div class="form-group">
     <label for="amount">Amount</label>
-    <input type="text" class="form-control" id="amount" name="amount" value="{{newLoan.amount}}" placeholder="Kwota pożyczki">    
+    <input type="text" class="form-control" id="amount" name="amount" value="{{newLoan.amount}}" placeholder="Loan Amount">    
   </div>
+
    <div class="form-group">
     <label for="returnDate">Date of return</label>
-    <input type="date" class="form-control" id="returnDate" name="returnDate" value="{{newLoan.returnDate}}" placeholder="Data zwrotu">    
+    <input type="date" class="form-control" id="returnDate" name="returnDate" value="{{newLoan.returnDate}}" placeholder="Return date">    
   </div>
-  <input type="hidden" type="text" name="_id" value="{{newLoan._id}}"/>
-  <input type="submit" class="btn btn-primary" value="Zakończ">
+
+  <div class="form-group">
+    <label>If paid?</label>
+    <input type="checkbox" id="paidYes" name="paid" value='true' >
+    <label for="paidYes">Yes</label>
+    <input type="checkbox" id="paidNo" name="paid" value='false' >
+    <label for="paidNo">No</label>  
+    <input type="hidden" id="paidHidden" name="paidHidden" value="{{newLoan.paid}}"/>
+  </div>
+
+  <input type="hidden" name="_id" value="{{newLoan._id}}"/>
+  <input type="submit" class="btn btn-primary" value="Finish">
 </form>
-<a class="btn btn-primary" href="/loans/">Powrót </a>
+<a class="btn btn-primary" href="/loans/">Back </a>
 </header>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function(){
+    setCheckboxes();
+});
+</script>
