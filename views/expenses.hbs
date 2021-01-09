@@ -7,12 +7,6 @@
             <h3 class="section-subheading text-muted">Check expenses on participated events.</h3>
         </div>
         <div id='search-controls' >
-            {{!-- <form action="/expenses/" method="GET" class="input-group input-group mb-3 ">
-                <input type="text" name="search" class="form-control" />
-                <input type="hidden" name="sort" values="{{sort}}" />
-                <input type="submit" class="btn btn-outline-secondary" value="Search" />
-            </form> --}}
-
             <form action="/expenses/" method="GET" class="input-group input-group mb-3 ">
                 <input type="text" name="search" class="form-control" />
                 <input type="hidden" name="sort" values="{{sort}}" />
@@ -23,15 +17,15 @@
         <ul class="timeline" id="timelineMainDiv">
             {{#each expenses}}
             <li>
-                <div class="timeline-image"><img class="rounded-circle img-fluid" src="/images/expenses/1.jpg" alt="" />
+                <div class="timeline-image"><img class="rounded-circle img-fluid" src="/images/expenses/4.jpg" alt="" />
                 </div>
                 <div class="timeline-panel">
                     <div class="timeline-heading">
-                        <h4>{{cost}}</h4>
+                        <h4><span class="text-yellow">{{cost}} zł</span></h4>
                         <h4 class="subheading">{{name}}</h4>
                     </div>
                     <div class="timeline-body">
-                        <p class="text-muted">{{event}}</p>
+                        <p class="text-muted">Event name: {{event}}</p>
                     </div>
                     <div class="timeline-body">
                         <p class="text-muted">Sponsored by: {{sponsoredBy}}</p>

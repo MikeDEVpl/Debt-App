@@ -1,0 +1,43 @@
+<header class="masthead">
+    <div class="container">
+        <h2>{{report1.name}} - {{report1.desc}}</h2>
+        <table class="table table-dark">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Return date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each report1.loans}}
+            <tr>
+                <td>{{name}}</td> 
+                <td>{{amount}}</td> 
+                <td>{{returnDate}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+        </table>
+    </div>
+
+    <div class="container">
+        <h2>{{report2.name}} - {{report2.desc}}</h2>
+        <table class="table table-dark">
+        <thead>
+            <tr>
+                <th scope="col">Participant</th>
+                <th scope="col">Event name</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each report2.events}}
+            <tr>
+                <td>{{participant}}</td> 
+                <td>{{event}}</td> 
+            </tr>
+            {{/each}}
+        </tbody>
+        </table>
+    </div>
+</header>

@@ -1,50 +1,47 @@
 <header class="masthead">
-<section class="page-section" id="events">
-  <div class="container">
-    <div class="text-center">
-      <h2 class="section-heading text-uppercase">Events</h2>
-      <h3 class="section-subheading text-muted">You are participating in those events</h3>
-    </div>
+  <section class="page-section" id="events">
+    <div class="container">
+      <div class="text-center">
+        <h2 class="section-heading text-uppercase">Events</h2>
+        <h3 class="section-subheading text-muted">You are participating in those events</h3>
+      </div>
 
-    <div id='search-controls'>
-      <form action="/events/" method="GET" class="input-group input-group mb-3 ">
-        <input type="text" name="search" class="form-control" />
-        <input type="hidden" name="sort" values="{{sort}}" />
-        <input type="submit" class="btn btn-outline-secondary" value="Search" />
-      </form>
-    </div>
+      <div id='search-controls'>
+        <form action="/events/" method="GET" class="input-group input-group mb-3 ">
+          <input type="text" name="search" class="form-control" />
+          <input type="hidden" name="sort" values="{{sort}}" />
+          <input type="submit" class="btn btn-outline-secondary" value="Search" />
+        </form>
+      </div>
 
-    <div class="row">
-      {{#each events}}
-      <div class="col-lg-4 col-sm-6 mb-4 ">
-        <div class="events-item">
-          <div class="events-hover">
-          </div>
-          <img class="img-fluid" src="/images/events/04-thumbnail.jpg" alt="" />
-          </a>
-          <div class="events-caption">
-            <div class="events-caption-heading">{{name}}</div>
-            <div class="events-caption-subheading text-muted">Event date: {{date}}</div>
-            <div class="events-caption-subheading text-muted">Participants: {{participants}}</div>
-            <a class="btn btn-info" href="newEvent/?id={{this._id}}">Edit</a>
-            <a class="btn btn-info" href="expenses/?search={{this.name}}">Expenses</a>
-            <a class="btn btn-danger" href="event-delete/?id={{this._id}}">Delete</a </div>
+      <div class="row">
+        {{#each events}}
+        <div class="col-lg-4 col-sm-6 mb-4 ">
+          <div class="events-item">
+            <div class="events-hover">
+            </div>
+            <img class="img-fluid" src="/images/events/04-thumbnail.jpg" alt="" />
+            </a>
+            <div class="events-caption">
+              <div class="events-caption-heading">{{name}}</div>
+              <div class="events-caption-subheading text-black-50">Event date: <span class="text-bold">{{date}}</span></div>
+              <div class="events-caption-subheading text-black-50">Participants: <span class="text-bold"> {{participants}} </div>
+              <a class="btn btn-info" href="newEvent/?id={{this._id}}">Edit</a>
+              <a class="btn btn-info" href="expenses/?search={{this.name}}">Expenses</a>
+              <a class="btn btn-danger" href="event-delete/?id={{this._id}}">Delete</a </div>
+            </div>
           </div>
         </div>
+        {{/each}}
       </div>
-      {{/each}}
     </div>
 
-
-
-  </div>
-
-  <div id='page-controls' class="text-center container">
-    <a class="btn btn-primary btn-sm text-black-50" href="?sort=1">A-Z</a>
-    <a class="btn btn-primary btn-sm text-black-50" href="?sort=-1">Z-A</a>
-    <a class="btn btn-primary btn-sm text-black-50" href="?sort={{sort}}&page={{prevPage}}">&lt;&lt;</a>
-    <a class="btn btn-primary btn-sm text-black-50" href="?sort={{sort}}&page={{nextPage}}">&gt;&gt;</a>
-    <div class="text-muted" id="page-summary">Page {{page}} of {{maxPage}} found {{count}} records</div>
-  </div>
-</section>
+    <div id='page-controls' class="text-center container">
+      <a class="btn btn-primary btn-sm text-black-50" href="?sort=1">A-Z</a>
+      <a class="btn btn-primary btn-sm text-black-50" href="?sort=-1">Z-A</a>
+      <a class="btn btn-primary btn-sm text-black-50" href="?sort={{sort}}&page={{prevPage}}">&lt;&lt;</a>
+      <a class="btn btn-primary btn-sm text-black-50" href="?sort={{sort}}&page={{nextPage}}">&gt;&gt;</a>
+      <div class="text-muted" id="page-summary">Page {{page}} of {{maxPage}} found {{count}} records</div>
+    </div>
+  </section>
 </header>

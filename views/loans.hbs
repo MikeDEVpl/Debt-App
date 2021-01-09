@@ -1,60 +1,48 @@
 <header class="masthead">
-<!-- loans section-->
-<section class="page-section" id="loans">
-    <div class="container">
-        <div class="text-center">
-            <h2 class="section-heading text-uppercase">Loans</h2>
-            <h3 class="section-subheading text-muted">Let's see your loans.</h3>
-        </div>
-
-        <div id='search-controls' >
-            <form action="/loans/" method="GET" class="input-group input-group mb-3 ">
-                <input type="text" name="search" class="form-control" />
-                <input type="hidden" name="sort" values="{{sort}}" />
-                <input type="submit" class="btn btn-outline-secondary" value="Search" />
-            </form>
-        </div>
-
-        <div class="row text-center" id="loansMainDiv">
-            {{#each loans}}
-            <div class="col-md-4">
-
-                <span class="fa-stack fa-4x">
-                    <i class="fas fa-circle fa-stack-2x text-primary "></i>
-                    <i class="fas fa-money-check-alt fa-stack-1x fa-inverse"></i>
-                </span>
-
-                <span id="paidInd" style="display:none">
-                    Paid
-                </span>
-       
-                <h4 class='my-3'>{{name}} | {{amount}} zł</h4>
-                <p class='text-muted'>{{returnDate}}</p>
-                <p id="paidHidden" style="display:none">{{paid}}</p>
-                <a class="btn btn-info" href="newLoan/?id={{this._id}}">Edit</a>
-                <a class="btn btn-danger" href="loan-delete/?id={{this._id}}">Delete</a>
+    <!-- loans section-->
+    <section class="page-section" id="loans">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-heading text-uppercase">Loans</h2>
+                <h3 class="section-subheading text-muted">Let's see your loans.</h3>
             </div>
-            {{/each}}
+
+            <div id='search-controls'>
+                <form action="/loans/" method="GET" class="input-group input-group mb-3 ">
+                    <input type="text" name="search" class="form-control" />
+                    <input type="hidden" name="sort" values="{{sort}}" />
+                    <input type="submit" class="btn btn-outline-secondary" value="Search" />
+                </form>
+            </div>
+
+            <div class="row text-center" id="loansMainDiv">
+                {{#each loans}}
+                    <div class="col-md-4">
+
+                        <span class="fa-stack fa-4x">
+                            <i class="fas fa-money-check-alt fa-stack-1x fa-inverse text-yellow"></i>
+                        </span>
+
+                        <h4 class='my-3'>{{name}} <span class="text-yellow"> {{amount}} zł </span></h4>
+                        <p class='text-muted'>{{returnDate}} {{paid}}</p>
+                        
+                        <a class="btn btn-info" href="newLoan/?id={{this._id}}">Edit</a>
+                        <a class="btn btn-danger" href="loan-delete/?id={{this._id}}">Delete</a>
+                        
+                    </div>
+                {{/each}}
+            </div>
+
+            <br>
+
+            <div id='page-controls' class="text-center">
+                <a class="btn btn-primary btn-sm text-black-50" href="?sort=1">A-Z</a>
+                <a class="btn btn-primary btn-sm text-black-50" href="?sort=-1">Z-A</a>
+                <a class="btn btn-primary btn-sm text-black-50" href="?sort={{sort}}&page={{prevPage}}">&lt;&lt;</a>
+                <a class="btn btn-primary btn-sm text-black-50" href="?sort={{sort}}&page={{nextPage}}">&gt;&gt;</a>
+                <div class="text-muted" id="page-summary">Page {{page}} of {{maxPage}} found {{count}} records</div>
+            </div>
+
         </div>
-        
-        <div id='page-controls' class="text-center">
-            <a class="btn btn-primary btn-sm text-black-50" href="?sort=1">A-Z</a>
-            <a class="btn btn-primary btn-sm text-black-50" href="?sort=-1">Z-A</a>
-            <a class="btn btn-primary btn-sm text-black-50" href="?sort={{sort}}&page={{prevPage}}">&lt;&lt;</a>
-            <a class="btn btn-primary btn-sm text-black-50" href="?sort={{sort}}&page={{nextPage}}">&gt;&gt;</a>
-            <div class="text-muted" id="page-summary">Page {{page}} of {{maxPage}} found {{count}} records</div>
-        </div>
-        
-    </div>
-</section>
+    </section>
 </header>
-
-
-
-<script>
-    //takie wolanie bierze dlajednego obiektu musi byc jakas petla dla wszystkich
-
-  document.addEventListener("DOMContentLoaded", function(){
-    setPaid();
-});
-</script>

@@ -92,7 +92,6 @@ function fillFields(){
     
         var selectBuyerTag = document.getElementById("selectBuyer");
         var arr = currentParticipants.split(',');
-        alert(arr);
 
         while (selectBuyerTag.firstChild){
             selectBuyerTag.removeChild(selectBuyerTag.firstChild);
@@ -123,13 +122,3 @@ function setCheckboxes(){
    }
 }
 
-//zle bo bierze tylko dla jednego obiektu
-function setPaid(){
-    var paidInd = document.getElementById("paidInd");
-    var hiddenInput = document.getElementById("paidHidden");
-    alert(hiddenInput.innerHTML);
-
-    if(hiddenInput.innerHTML == "true"){
-        paidInd.show();
-    }
-}

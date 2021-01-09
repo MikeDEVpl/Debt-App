@@ -4,7 +4,7 @@ const ObjectId = require('mongodb').ObjectId;
 
 //Get LOANS page
 router.get('/loans/', async function(req, res, next) {
-  const pageSize = 3;
+  const pageSize = 6;
   let sort = parseInt(req.query.sort);
   sort = sort ? sort : 1;
   let search = req.query.search;
@@ -36,7 +36,11 @@ router.get('/loans/', async function(req, res, next) {
              .skip(page * pageSize)
              .limit(pageSize)
              .toArray();
-   
+  
+    loans.forEach(element => {
+    element.paid = element.paid == "true" ? element.paid = "Paid" : "Not paid";
+  });
+  
   res.render('loans', 
     { title: 'DebtApp', 
     loans: loans, 
@@ -50,7 +54,7 @@ router.get('/loans/', async function(req, res, next) {
 
 //GET EVENTS page
 router.get('/events/', async function(req, res, next) {
-  const pageSize = 3;
+  const pageSize = 6;
   let sort = parseInt(req.query.sort);
   sort = sort ? sort : 1;
   let search = req.query.search;
@@ -96,7 +100,7 @@ router.get('/events/', async function(req, res, next) {
 
 //Get Expenses page
 router.get('/expenses/', async function(req, res, next) {
-  const pageSize = 3;
+  const pageSize = 6;
   let sort = req.query.sort;
   sort = sort ? sort : 1;
   let search = req.query.search;
@@ -140,24 +144,71 @@ router.get('/expenses/', async function(req, res, next) {
     count: count });
 });
 
-// //GET expenses and participants for newEvent page
-// router.get('/newExpense/', async function(req, res, next) {
-//   const events = await req.db.db('debtapp')
-//     .collection('events')
-//     .find({})
-//     .collation({
-//     locale: 'pl'
-//   })
-//   .toArray();
+//GET reports
+router.get('/reports/', async function(req, res, next) {
 
+  //Report 1 - not paid loans
+  const loans = await req.db.db('debtapp')
+             .collection('loans')
+             .find({paid: "false"})
+             .toArray();
   
-//   res.render('newExpense', { title: 'New Expense', events: events });  
-//   });
+    loans.forEach(element => {
+    element.paid = element.paid == "true" ? "Paid" : "Not paid";
+  });
+  
+  let report1 = {
+    name: "Loans Report", 
+    desc: "Not paid loans", 
+    loans: loans
+  };
+
+//Zle dziala - bo nie gropuje eventów dla partycypanta
+
+  //Report 2 - which user is participating in event
+  const events = await req.db.db('debtapp')
+  .collection('events')
+  .find({})
+  .toArray();
+
+  var participantsForEvents = [];
+
+  events.forEach(event => {
+    event.participants.forEach(participant => {
+      participantsForEvents.push({participant : participant, event: event.name});
+    });
+  });
+
+
+  let report2 ={
+    name: "Event users",
+    desc: "Events by user",
+    events: participantsForEvents
+  };
+
+  //Raport 3 - Sum of expenses for event
+  const expenses = await req.db.db('debtapp')
+  .collection('expenses')
+  .find({})
+  .toArray();
+
+  let total ={};
+  let report3 ={
+    name: "Event total cost",
+    desc: "Cost of all expenses for event",
+    total: total
+  };
+
+  // let report4 ="d";
+
+  res.render('reports', { title: 'Reports',report1: report1, report2: report2, report3: report3 });  
+});
   
 /* GET single loan */
 router.get('/newLoan/', async function(req, res, next) {
   const id = req.query.id;
   let newLoan;
+
   if (id) {
       newLoan = await req.db.db('debtapp')
           .collection('loans')
@@ -170,7 +221,8 @@ router.get('/newLoan/', async function(req, res, next) {
       paid: false
     };
   }
-  res.render('newLoan', { title: 'New/Edit loan', newLoan: newLoan });
+
+ res.render('newLoan', { title: 'New/Edit loan', newLoan: newLoan });
 });
 
 /* GET single event */

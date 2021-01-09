@@ -1,21 +1,28 @@
 <header class="masthead">
-<form action="/newEvent/" method="post">
-  <div class="form-group">
-    <label for="eventName">Event name</label>
-    <input type="text" class="form-control" name="name" id="name" value="{{newEvent.name}}" placeholder="Enter event name">
-    <small id="eventHelp" class="form-text text-muted">Event name</small>
+  <div align="center">
+    <form action="/newEvent/" method="post">
+
+      <div class="form-group col-md-4">
+        <label for="eventName">Event name</label>
+        <input type="text" class="form-control" name="name" id="name" value="{{newEvent.name}}"
+          placeholder="Enter event name">
+      </div>
+
+      <div class="form-group col-md-4">
+        <label for="returnDate">Event date</label>
+        <input type="date" class="form-control" id="date" name="date" value="{{newEvent.date}}"
+          placeholder="Return date">
+      </div>
+
+      <div class="form-group col-md-4">
+        <label for="participant">Participants</label>
+        <input type="text" class="form-control" name="participants" id="participants" value="{{newEvent.participants}}"
+          placeholder="Enter names separated by comas">
+      </div>
+
+      <input type="hidden" type="text" name="_id" value="{{newEvent._id}}" />
+      <button type="submit" class="btn btn-primary">Add event</button>
+      <a class="btn btn-danger" href="/events/">Powrót </a>
+    </form>
   </div>
-    <div class="form-group">
-    <label for="returnDate">Event date</label>
-    <input type="date" class="form-control" id="date" name="date" value="{{newEvent.date}}" placeholder="Data zwrotu">    
-  </div>
-  <div class="form-group">
-    <label for="participant">Participants</label>
-    <input type="text" class="form-control" name="participants" id="participants" value="{{newEvent.participants}}" placeholder="Enter names separated by comas">
-    <small id="participantHelp" class="form-text text-muted">Add event participants</small>
-  </div>  
-  <input type="hidden" type="text" name="_id" value="{{newEvent._id}}"/>
-  <button type="submit" class="btn btn-primary">Add event</button>
-</form>
-<a class="btn btn-primary" href="/events/">Powrót </a>
-</div>
+</header>
