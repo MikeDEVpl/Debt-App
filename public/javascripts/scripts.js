@@ -55,6 +55,8 @@
     $(window).scroll(navbarCollapse);
 })(jQuery); // End of use strict
 
+// Proprietary functions for application
+
 function selEvnt() {
     var eventReadonlyInput = document.getElementById("event");
     eventReadonlyInput.value = selectEvent.value;
