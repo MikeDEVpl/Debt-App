@@ -1,6 +1,9 @@
 <header class="masthead" >
   <div align="center">
     <form action="/newLoan/" method="post">
+    {{#each errors}}
+      <label id='error-summary'>{{this}}</label><br>
+    {{/each}}
       <div class="form-group col-md-4">
         <label for="name">Debtor</label>
         <input type="text" class="form-control " id="name" name="name" value="{{newLoan.name}}" placeholder="Debtor name">    

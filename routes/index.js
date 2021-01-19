@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const ObjectId = require('mongodb').ObjectId;
+var {check,validationResult} = require('express-validator');
 
 //Get LOANS page
 router.get('/loans/', async function(req, res, next) {
@@ -221,8 +222,9 @@ router.get('/newLoan/', async function(req, res, next) {
       paid: false
     };
   }
+  let errors;
 
- res.render('newLoan', { title: 'New/Edit loan', newLoan: newLoan });
+ res.render('newLoan', { title: 'New/Edit loan', newLoan: newLoan, errors : errors });
 });
 
 /* GET single event */
@@ -240,7 +242,9 @@ router.get('/newEvent/', async function(req, res, next) {
       participants: []
     };
   }
-  res.render('newEvent', { title: 'New/Edit event', newEvent: newEvent });
+
+  let errors;
+  res.render('newEvent', { title: 'New/Edit event', newEvent: newEvent, errors: errors });
 });
 
 /* GET single expense */
@@ -270,37 +274,58 @@ router.get('/newExpense/', async function(req, res, next) {
   .sort()
   .toArray();
   
+  let errors;
+
   res.render('newExpense', { title: 'New/Edit event', 
     newExpense: newExpense, 
-    events: events });
+    events: events,
+    errors: errors });
 });
 
 /* POST single loan */
-router.post('/newLoan/', async function (req, res, next) {
-  try {
-    let newLoan = {
-      _id: req.body._id ? ObjectId(req.body._id) : undefined,
-      name: req.body.name,
-      amount: req.body.amount,
-      returnDate: req.body.returnDate,
-      paid: req.body.paid
-    };
+router.post('/newLoan/', 
+//Field validations
+check('amount').isNumeric().withMessage("enter numeric amount"), 
+check('name').notEmpty().withMessage('enter name'),
+check('returnDate').notEmpty().withMessage('enter date').isDate().withMessage('enter correct date'),
+async function (req, res, next) {
 
-    if (newLoan._id) {
-      await req.db.db('debtapp').collection("loans").replaceOne({_id: newLoan._id}, newLoan);
-    } else {
-      await req.db.db('debtapp').collection("loans").insertOne(newLoan);
-    }
-    res.redirect('/loans/');
-  } catch (err) {
-    console.error(err);
+  let newLoan = {
+    _id: req.body._id ? ObjectId(req.body._id) : undefined,
+    name: req.body.name,
+    amount: req.body.amount,
+    returnDate: req.body.returnDate,
+    paid: req.body.paid
+  };
+
+  let e = validateFormServerSide(req);
+  if(e.flag){
+    res.render('newLoan', { title: 'New/Edit loan', newLoan: newLoan, errors : e.errMsgs });
   }
-  //next();
+  else
+  {
+    try {
+      if (newLoan._id) {
+        await req.db.db('debtapp').collection("loans").replaceOne({_id: newLoan._id}, newLoan);
+      } else {
+        await req.db.db('debtapp').collection("loans").insertOne(newLoan);
+      }
+      res.redirect('/loans/');
+    } catch (err) {
+      console.error(err);
+    }
+    //next();
+  }
 });
 
 /* POST single event */
-router.post('/newEvent/', async function (req, res, next) {
-  try {
+router.post('/newEvent/', 
+//Field validations
+check('name').notEmpty().withMessage('Enter event name'),
+check('date').isDate().withMessage('Enter correct date'),
+check('participants').notEmpty().withMessage('Enter participants'),
+async function (req, res, next) {
+  
     // parse participants
     let participantArray = req.body.participants.split(',');
 
@@ -311,40 +336,71 @@ router.post('/newEvent/', async function (req, res, next) {
       participants: participantArray
     };
 
-    if (newEvent._id) {
-      await req.db.db('debtapp').collection("events").replaceOne({_id: newEvent._id}, newEvent);
-    } else {
-      await req.db.db('debtapp').collection("events").insertOne(newEvent);
+    let e = validateFormServerSide(req);
+    if (e.flag) {
+      res.render('newEvent', { title: 'New/Edit event', newEvent: newEvent, errors: e.errMsgs });
     }
-    res.redirect('/events/');
-  } catch (err) {
-    console.error(err);
+    else {
+      try {
+      if (newEvent._id) {
+        await req.db.db('debtapp').collection("events").replaceOne({ _id: newEvent._id }, newEvent);
+      } else {
+        await req.db.db('debtapp').collection("events").insertOne(newEvent);
+      }
+      res.redirect('/events/');
+    } catch (err) {
+      console.error(err);
+    }
   }
   //next();
 });
 
 
 //POST single expense
-router.post('/newExpense/', async function (req, res, next) {
-  try {  
+router.post('/newExpense/', 
+//Field validations
+check('event').notEmpty().withMessage("Select event"),
+check('name').notEmpty().withMessage("Enter expense name"),
+check('cost').isNumeric().withMessage('enter numeric cost'),
+check('sponsoredBy').notEmpty().withMessage("Select sponsor"),
+async function (req, res, next) {
 
-    let newExpense = {
-      _id: req.body._id ? ObjectId(req.body._id) : undefined,
-      event: req.body.event,
-      name: req.body.name,
-      cost: req.body.cost,
-      sponsoredBy: req.body.sponsoredBy
-    };
+  let newExpense = {
+    _id: req.body._id ? ObjectId(req.body._id) : undefined,
+    event: req.body.event,
+    name: req.body.name,
+    cost: req.body.cost,
+    sponsoredBy: req.body.sponsoredBy
+  };
 
-    if (newExpense._id) {
-      await req.db.db('debtapp').collection("expenses").replaceOne({ _id: newExpense._id }, newExpense);
-    } else {
-      await req.db.db('debtapp').collection("expenses").insertOne(newExpense);
+  let events = await req.db.db('debtapp')
+  .collection('events')
+  .find()            
+  .collation({
+    locale: 'pl'
+  })
+  .sort()
+  .toArray();
+
+  let e = validateFormServerSide(req);
+  if (e.flag) {
+    res.render('newExpense', { title: 'New/Edit event', 
+    newExpense: newExpense, 
+    events: events,
+    errors: e.errMsgs });
+  }
+  else {
+    try {
+      if (newExpense._id) {
+        await req.db.db('debtapp').collection("expenses").replaceOne({ _id: newExpense._id }, newExpense);
+      } else {
+        await req.db.db('debtapp').collection("expenses").insertOne(newExpense);
+      }
+      res.redirect('/expenses/');
+
+    } catch (err) {
+      console.error(err);
     }
-    res.redirect('/expenses/');
-
-  } catch (err) {
-    console.error(err);
   }
 });
 
@@ -415,3 +471,38 @@ router.get('/index/', async function(req, res, next) {
 });
 
 module.exports = router;
+
+
+function validateFormServerSide(req){
+  let errMsgs = _validateForm(req);
+  let flag;
+  if(errMsgs == undefined || errMsgs.length !=0){
+    flag = true;
+  }
+
+  return {flag: flag, errMsgs : errMsgs};
+}
+
+function _validateForm(req){
+  let errors = validationResult(req);
+  let errMsgs = [];
+  if(!errors.isEmpty()){
+    errMsgs = _parseErrors(errors);
+  }
+  return errMsgs;
+};
+
+
+function _parseErrors(errors) {
+  let errMsgs =[];
+  for (var err of errors.array()) {
+    for (var key in err) {
+      if (key == 'msg') {
+        errMsgs.push(err[key]);
+      }
+    }
+  }
+
+  return errMsgs;
+};
+

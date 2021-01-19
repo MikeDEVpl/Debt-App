@@ -1,7 +1,9 @@
 <header class="masthead">
 <div align="center">
     <form action="/newExpense/" method="post">
-
+      {{#each errors}}
+        <label id='error-summary'>{{this}}</label><br>
+      {{/each}}
       <div class="form-group col-md-4">
         <label for="selectEvent">Event</label>
         <input class="form-control tex-muted" readonly type="text" name="event" value="{{newExpense.event}}"
