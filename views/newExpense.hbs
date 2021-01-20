@@ -2,12 +2,14 @@
 <div align="center">
     <form action="/newExpense/" method="post">
       {{#each errors}}
-        <label id='error-summary'>{{this}}</label><br>
+        <label id='error-summary' class="alert alert-danger">{{this}}</label><br>
       {{/each}}
       <div class="form-group col-md-4">
         <label for="selectEvent">Event</label>
-        <input class="form-control tex-muted" readonly type="text" name="event" value="{{newExpense.event}}"
-          id="event" placeholder="Pick a value below... "/>
+        <input class="form-control text-muted" readonly 
+          type="text" name="event" value="{{newExpense.event}}"
+          id="event" placeholder="Pick a value below... "
+          required/>
       </div>
 
       <div class="form-group col-md-4">
@@ -21,19 +23,27 @@
       
       <div class="form-group col-md-4">
         <label for="expense">Expense</label>
-        <input type="text" class="form-control" value="{{newExpense.name}}" name="name" id="name"
-          placeholder="Expense name">
+        <input type="text" class="form-control" 
+          value="{{newExpense.name}}" name="name" id="name"
+          placeholder="Expense name"
+          required>
       </div>
 
       <div class="form-group col-md-4">
         <label for="expenseAmount">Cost</label>
-        <input type="text" class="form-control" value="{{newExpense.cost}}" name="cost" id="cost" placeholder="Amount">
+        <input type="text" class="form-control" 
+        value="{{newExpense.cost}}" 
+        name="cost" id="cost" placeholder="Amount"
+        pattern = "[0-9]{1,5}"
+        title = "only digits max. length 5 characters"
+        required>
       </div>
 
       <div class="form-group col-md-4">
         <label for="sponsoredBy">Who's sponsoring</label>
         <input type="text" class="form-control" readonly value="{{newExpense.sponsoredBy}}" name="sponsoredBy"
-          id="sponsoredBy" placeholder="Pick a value below... "/>
+          id="sponsoredBy" placeholder="Pick a value below... "
+          required/>
       </div>
 
       <div class="form-group col-md-4">

@@ -2,21 +2,33 @@
   <div align="center">
     <form action="/newLoan/" method="post">
     {{#each errors}}
-      <label id='error-summary'>{{this}}</label><br>
+      <label id='error-summary' class="alert alert-danger">{{this}}</label><br>
     {{/each}}
       <div class="form-group col-md-4">
         <label for="name">Debtor</label>
-        <input type="text" class="form-control " id="name" name="name" value="{{newLoan.name}}" placeholder="Debtor name">    
+        <input type="text" class="form-control " 
+               id="name" name="name" 
+               value="{{newLoan.name}}" placeholder="Debtor name"
+               required>    
       </div>
       
       <div class="form-group col-md-4">
         <label for="amount">Amount</label>
-        <input type="text" class="form-control" id="amount" name="amount" value="{{newLoan.amount}}" placeholder="Loan Amount">    
+        <input type="text" class="form-control" 
+        id="amount" name="amount" 
+        value="{{newLoan.amount}}" placeholder="Loan Amount"
+        pattern = "[0-9]{1,5}"
+        title = "only digits max. length 5 characters"
+        required
+        >    
       </div>
 
       <div class="form-group col-md-4">
         <label for="returnDate">Date of return</label>
-        <input type="date" class="form-control" id="returnDate" name="returnDate" value="{{newLoan.returnDate}}" placeholder="Return date">    
+        <input type="date" class="form-control" 
+        id="returnDate" name="returnDate" 
+        value="{{newLoan.returnDate}}" placeholder="Return date"
+        required>
       </div>
 
       <div class="form-group">

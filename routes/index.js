@@ -102,7 +102,7 @@ router.get('/events/', async function(req, res, next) {
 //Get Expenses page
 router.get('/expenses/', async function(req, res, next) {
   const pageSize = 6;
-  let sort = req.query.sort;
+  let sort = parseInt(req.query.sort);
   sort = sort ? sort : 1;
   let search = req.query.search;
   let querySearch = search ?
