@@ -2,7 +2,7 @@
   <div align="center">
     <form action="/newEvent/" method="post">
       {{#each errors}}
-        <label id='error-summary' class="alert alert-danger">{{this}}</label><br>
+      <label id='error-summary' class="alert alert-danger">{{this}}</label><br>
       {{/each}}
       <div class="form-group col-md-4">
         <label for="eventName">Event name</label>
@@ -13,15 +13,13 @@
       <div class="form-group col-md-4">
         <label for="returnDate">Event date</label>
         <input type="date" class="form-control" id="date" name="date" value="{{newEvent.date}}"
-          placeholder="Return date"
-          required>
+          placeholder="Return date" required>
       </div>
 
       <div class="form-group col-md-4">
         <label for="participant">Participants</label>
         <input type="text" class="form-control" name="participants" id="participants" value="{{newEvent.participants}}"
-          placeholder="Enter names separated by comas"
-          required>
+          placeholder="Enter names separated by comas" required>
       </div>
 
       <input type="hidden" type="text" name="_id" value="{{newEvent._id}}" />

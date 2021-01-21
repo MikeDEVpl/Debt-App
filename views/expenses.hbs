@@ -1,43 +1,46 @@
 <header class="masthead">
-<!-- expenses-->
-<section class="page-section" id="expenses">
-    <div class="container">
-        <div class="text-center">
-            <h2 class="section-heading text-uppercase">Expenses</h2>
-            <h3 class="section-subheading text-muted">Check expenses on participated events.</h3>
-        </div>
-        <div id='search-controls' >
-            <form action="/expenses/" method="GET" class="input-group input-group mb-3 ">
-                <input type="text" name="search" class="form-control" />
-                <input type="hidden" name="sort" values="{{sort}}" />
-                <input type="submit" class="btn btn-outline-secondary" value="Select Event" />
-            </form>
-        </div>
-        
-        <ul class="timeline" id="timelineMainDiv">
-            {{#each expenses}}
-            <li>
-                <div class="timeline-image"><img class="rounded-circle img-fluid" src="/images/expenses/3.jpg" alt="" />
-                </div>
-                <div class="timeline-panel">
-                    <div class="timeline-heading">
-                        <h4><span class="text-yellow">{{cost}} zł</span></h4>
-                        <h4 class="subheading">{{name}}</h4>
-                    </div>
-                    <div class="timeline-body">
-                        <p class="text-muted">Event name: {{event}}</p>
-                    </div>
-                    <div class="timeline-body">
-                        <p class="text-muted">Sponsored by: {{sponsoredBy}}</p>
-                    </div>
-                    <a class="btn btn-info" href="newExpense/?id={{this._id}}">Edit</a>
-                    <a class="btn btn-danger" href="expense-delete/?id={{this._id}}">Delete</a>
+    <section class="page-section" id="expenses">
+        <div class="container">
 
-                </div>
-            </li>
-            {{/each}}
-        </ul>
-    </div>
+            <div class="text-center">
+                <h2 class="section-heading text-uppercase">Expenses</h2>
+                <h3 class="section-subheading text-muted">Check expenses on participated events.</h3>
+            </div>
+            
+            <div id='search-controls'>
+                <form action="/expenses/" method="GET" class="input-group input-group mb-3 ">
+                    <input type="text" name="search" class="form-control" />
+                    <input type="hidden" name="sort" values="{{sort}}" />
+                    <input type="submit" class="btn btn-outline-secondary" value="Select Event" />
+                </form>
+            </div>
+
+            <ul class="timeline" id="timelineMainDiv">
+                {{#each expenses}}
+                <li>
+                    <div class="timeline-image"><img class="rounded-circle img-fluid" src="/images/expenses/3.jpg"
+                            alt="" />
+                    </div>
+                    <div class="timeline-panel">
+                        <div class="timeline-heading">
+                            <h4><span class="text-yellow">{{cost}} zł</span></h4>
+                            <h4 class="subheading">{{name}}</h4>
+                        </div>
+                        <div class="timeline-body">
+                            <p class="text-muted">Event name: {{event}}</p>
+                        </div>
+                        <div class="timeline-body">
+                            <p class="text-muted">Sponsored by: {{sponsoredBy}}</p>
+                        </div>
+                        <a class="btn btn-info" href="newExpense/?id={{this._id}}">Edit</a>
+                        <a class="btn btn-danger" href="expense-delete/?id={{this._id}}">Delete</a>
+
+                    </div>
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+
         <div id='page-controls' class="text-center">
             <a class="btn btn-primary btn-sm text-black-50" href="?sort=1">A-Z</a>
             <a class="btn btn-primary btn-sm text-black-50" href="?sort=-1">Z-A</a>
@@ -45,5 +48,6 @@
             <a class="btn btn-primary btn-sm text-black-50" href="?sort={{sort}}&page={{nextPage}}">&gt;&gt;</a>
             <div class="text-muted" id="page-summary">Page {{page}} of {{maxPage}} found {{count}} records</div>
         </div>
-</section>
+        
+    </section>
 </header>

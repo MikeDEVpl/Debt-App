@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-//var loansRouter = require('./routes/loans');
+
 var db = require('./db');
 
 db.connect();
@@ -21,8 +21,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname,'repositories')));
-app.use(express.static(path.join(__dirname,'logic')));
 
 app.use(function(req, res, next) {
   req.db = db.client;
@@ -37,6 +35,7 @@ app.use('/expenses', indexRouter);
 app.use('/newExpense', indexRouter);
 app.use('/newEvent', indexRouter);
 app.use('/newLoan', indexRouter);
+app.use('/reports', indexRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

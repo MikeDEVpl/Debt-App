@@ -3,6 +3,8 @@ var router = express.Router();
 const ObjectId = require('mongodb').ObjectId;
 var {check,validationResult} = require('express-validator');
 
+
+// LOANS ---------------------------------------------------------------
 //Get LOANS page
 router.get('/loans/', async function(req, res, next) {
   const pageSize = 6;
@@ -53,6 +55,78 @@ router.get('/loans/', async function(req, res, next) {
     count: count });
 });
 
+/* GET single loan */
+router.get('/newLoan/', async function(req, res, next) {
+  const id = req.query.id;
+  let newLoan;
+
+  if (id) {
+      newLoan = await req.db.db('debtapp')
+          .collection('loans')
+          .findOne(ObjectId(id));
+  } else {
+    newLoan = {
+      name: "",
+      amount: "",
+      returnDate:"",
+      paid: false
+    };
+  }
+  let errors;
+
+ res.render('newLoan', { title: 'New/Edit loan', newLoan: newLoan, errors : errors });
+});
+
+/* POST single loan */
+router.post('/newLoan/', 
+//Field validations
+check('amount').isNumeric().withMessage("enter numeric amount"), 
+check('name').notEmpty().withMessage('enter name'),
+check('returnDate').notEmpty().withMessage('enter date').isDate().withMessage('enter correct date'),
+async function (req, res, next) {
+
+  let newLoan = {
+    _id: req.body._id ? ObjectId(req.body._id) : undefined,
+    name: req.body.name,
+    amount: req.body.amount,
+    returnDate: req.body.returnDate,
+    paid: req.body.paid
+  };
+
+  let e = validateFormServerSide(req);
+  if(e.flag){
+    res.render('newLoan', { title: 'New/Edit loan', newLoan: newLoan, errors : e.errMsgs });
+  }
+  else
+  {
+    try {
+      if (newLoan._id) {
+        await req.db.db('debtapp').collection("loans").replaceOne({_id: newLoan._id}, newLoan);
+      } else {
+        await req.db.db('debtapp').collection("loans").insertOne(newLoan);
+      }
+      res.redirect('/loans/');
+    } catch (err) {
+      console.error(err);
+    }
+    //next();
+  }
+});
+
+// Delete loan
+router.get('/loan-delete/', async function (req, res, next) {
+  try {
+      let id = req.query.id;
+      await req.db.db('debtapp').collection("loans").findOneAndDelete({_id: ObjectId(id)});
+      res.redirect('/loans/');
+  } catch (err) {
+      console.error(err);
+  }
+  //next();
+});
+
+
+//EVENTS ----------------------------------------------------------------
 //GET EVENTS page
 router.get('/events/', async function(req, res, next) {
   const pageSize = 6;
@@ -99,6 +173,76 @@ router.get('/events/', async function(req, res, next) {
     count: count });
 });
 
+/* GET single event */
+router.get('/newEvent/', async function(req, res, next) {
+  const id = req.query.id;
+  let newEvent;
+  if (id) {
+      newEvent = await req.db.db('debtapp')
+          .collection('events')
+          .findOne(ObjectId(id));
+  } else {
+    newEvent = {
+      name: "",
+      date:"",
+      participants: []
+    };
+  }
+
+  let errors;
+  res.render('newEvent', { title: 'New/Edit event', newEvent: newEvent, errors: errors });
+});
+
+/* POST single event */
+router.post('/newEvent/', 
+//Field validations
+check('name').notEmpty().withMessage('Enter event name'),
+check('date').isDate().withMessage('Enter correct date'),
+check('participants').notEmpty().withMessage('Enter participants'),
+async function (req, res, next) {
+  
+    // parse participants
+    let participantArray = req.body.participants.split(',');
+
+    let newEvent = {
+      _id: req.body._id ? ObjectId(req.body._id) : undefined,
+      name: req.body.name,
+      date: req.body.date,
+      participants: participantArray
+    };
+
+    let e = validateFormServerSide(req);
+    if (e.flag) {
+      res.render('newEvent', { title: 'New/Edit event', newEvent: newEvent, errors: e.errMsgs });
+    }
+    else {
+      try {
+      if (newEvent._id) {
+        await req.db.db('debtapp').collection("events").replaceOne({ _id: newEvent._id }, newEvent);
+      } else {
+        await req.db.db('debtapp').collection("events").insertOne(newEvent);
+      }
+      res.redirect('/events/');
+    } catch (err) {
+      console.error(err);
+    }
+  }
+  //next();
+});
+
+// Delete Event
+router.get('/event-delete/', async function (req, res, next) {
+  try {
+      let id = req.query.id;
+      await req.db.db('debtapp').collection("events").findOneAndDelete({_id: ObjectId(id)});
+      res.redirect('/events/');
+  } catch (err) {
+      console.error(err);
+  }
+  //next();
+});
+
+//EXPENSES --------------------------------------------------------------
 //Get Expenses page
 router.get('/expenses/', async function(req, res, next) {
   const pageSize = 6;
@@ -145,6 +289,102 @@ router.get('/expenses/', async function(req, res, next) {
     count: count });
 });
 
+/* GET single expense */
+router.get('/newExpense/', async function(req, res, next) {
+  const id = req.query.id;
+  let newExpense;
+  let events;
+  if (id) {
+      newExpense = await req.db.db('debtapp')
+          .collection('expenses')
+          .findOne(ObjectId(id));
+  } else {
+    newExpense = {
+      event:"",
+      name: "",
+      cost:"",
+      sponsoredBy:""
+    };
+  }
+
+  events = await req.db.db('debtapp')
+  .collection('events')
+  .find()            
+  .collation({
+    locale: 'pl'
+  })
+  .sort()
+  .toArray();
+  
+  let errors;
+
+  res.render('newExpense', { title: 'New/Edit event', 
+    newExpense: newExpense, 
+    events: events,
+    errors: errors });
+});
+
+//POST single expense
+router.post('/newExpense/', 
+//Field validations
+check('event').notEmpty().withMessage("Select event"),
+check('name').notEmpty().withMessage("Enter expense name"),
+check('cost').isNumeric().withMessage('enter numeric cost'),
+check('sponsoredBy').notEmpty().withMessage("Select sponsor"),
+async function (req, res, next) {
+
+  let newExpense = {
+    _id: req.body._id ? ObjectId(req.body._id) : undefined,
+    event: req.body.event,
+    name: req.body.name,
+    cost: req.body.cost,
+    sponsoredBy: req.body.sponsoredBy
+  };
+
+  let events = await req.db.db('debtapp')
+  .collection('events')
+  .find()            
+  .collation({
+    locale: 'pl'
+  })
+  .sort()
+  .toArray();
+
+  let e = validateFormServerSide(req);
+  if (e.flag) {
+    res.render('newExpense', { title: 'New/Edit event', 
+    newExpense: newExpense, 
+    events: events,
+    errors: e.errMsgs });
+  }
+  else {
+    try {
+      if (newExpense._id) {
+        await req.db.db('debtapp').collection("expenses").replaceOne({ _id: newExpense._id }, newExpense);
+      } else {
+        await req.db.db('debtapp').collection("expenses").insertOne(newExpense);
+      }
+      res.redirect('/expenses/');
+
+    } catch (err) {
+      console.error(err);
+    }
+  }
+});
+
+// Delete Expense
+router.get('/expense-delete/', async function (req, res, next) {
+  try {
+      let id = req.query.id;
+      await req.db.db('debtapp').collection("expenses").findOneAndDelete({_id: ObjectId(id)});
+      res.redirect('/expenses/');
+  } catch (err) {
+      console.error(err);
+  }
+  //next();
+});
+
+//REPORTS ---------------------------------------------------------------
 //GET reports
 router.get('/reports/', async function(req, res, next) {
 
@@ -205,273 +445,18 @@ router.get('/reports/', async function(req, res, next) {
   res.render('reports', { title: 'Reports',report1: report1, report2: report2, report3: report3 });  
 });
   
-/* GET single loan */
-router.get('/newLoan/', async function(req, res, next) {
-  const id = req.query.id;
-  let newLoan;
-
-  if (id) {
-      newLoan = await req.db.db('debtapp')
-          .collection('loans')
-          .findOne(ObjectId(id));
-  } else {
-    newLoan = {
-      name: "",
-      amount: "",
-      returnDate:"",
-      paid: false
-    };
-  }
-  let errors;
-
- res.render('newLoan', { title: 'New/Edit loan', newLoan: newLoan, errors : errors });
-});
-
-/* GET single event */
-router.get('/newEvent/', async function(req, res, next) {
-  const id = req.query.id;
-  let newEvent;
-  if (id) {
-      newEvent = await req.db.db('debtapp')
-          .collection('events')
-          .findOne(ObjectId(id));
-  } else {
-    newEvent = {
-      name: "",
-      date:"",
-      participants: []
-    };
-  }
-
-  let errors;
-  res.render('newEvent', { title: 'New/Edit event', newEvent: newEvent, errors: errors });
-});
-
-/* GET single expense */
-router.get('/newExpense/', async function(req, res, next) {
-  const id = req.query.id;
-  let newExpense;
-  let events;
-  if (id) {
-      newExpense = await req.db.db('debtapp')
-          .collection('expenses')
-          .findOne(ObjectId(id));
-  } else {
-    newExpense = {
-      event:"",
-      name: "",
-      cost:"",
-      sponsoredBy:""
-    };
-  }
-
-  events = await req.db.db('debtapp')
-  .collection('events')
-  .find()            
-  .collation({
-    locale: 'pl'
-  })
-  .sort()
-  .toArray();
-  
-  let errors;
-
-  res.render('newExpense', { title: 'New/Edit event', 
-    newExpense: newExpense, 
-    events: events,
-    errors: errors });
-});
-
-/* POST single loan */
-router.post('/newLoan/', 
-//Field validations
-check('amount').isNumeric().withMessage("enter numeric amount"), 
-check('name').notEmpty().withMessage('enter name'),
-check('returnDate').notEmpty().withMessage('enter date').isDate().withMessage('enter correct date'),
-async function (req, res, next) {
-
-  let newLoan = {
-    _id: req.body._id ? ObjectId(req.body._id) : undefined,
-    name: req.body.name,
-    amount: req.body.amount,
-    returnDate: req.body.returnDate,
-    paid: req.body.paid
-  };
-
-  let e = validateFormServerSide(req);
-  if(e.flag){
-    res.render('newLoan', { title: 'New/Edit loan', newLoan: newLoan, errors : e.errMsgs });
-  }
-  else
-  {
-    try {
-      if (newLoan._id) {
-        await req.db.db('debtapp').collection("loans").replaceOne({_id: newLoan._id}, newLoan);
-      } else {
-        await req.db.db('debtapp').collection("loans").insertOne(newLoan);
-      }
-      res.redirect('/loans/');
-    } catch (err) {
-      console.error(err);
-    }
-    //next();
-  }
-});
-
-/* POST single event */
-router.post('/newEvent/', 
-//Field validations
-check('name').notEmpty().withMessage('Enter event name'),
-check('date').isDate().withMessage('Enter correct date'),
-check('participants').notEmpty().withMessage('Enter participants'),
-async function (req, res, next) {
-  
-    // parse participants
-    let participantArray = req.body.participants.split(',');
-
-    let newEvent = {
-      _id: req.body._id ? ObjectId(req.body._id) : undefined,
-      name: req.body.name,
-      date: req.body.date,
-      participants: participantArray
-    };
-
-    let e = validateFormServerSide(req);
-    if (e.flag) {
-      res.render('newEvent', { title: 'New/Edit event', newEvent: newEvent, errors: e.errMsgs });
-    }
-    else {
-      try {
-      if (newEvent._id) {
-        await req.db.db('debtapp').collection("events").replaceOne({ _id: newEvent._id }, newEvent);
-      } else {
-        await req.db.db('debtapp').collection("events").insertOne(newEvent);
-      }
-      res.redirect('/events/');
-    } catch (err) {
-      console.error(err);
-    }
-  }
-  //next();
-});
-
-
-//POST single expense
-router.post('/newExpense/', 
-//Field validations
-check('event').notEmpty().withMessage("Select event"),
-check('name').notEmpty().withMessage("Enter expense name"),
-check('cost').isNumeric().withMessage('enter numeric cost'),
-check('sponsoredBy').notEmpty().withMessage("Select sponsor"),
-async function (req, res, next) {
-
-  let newExpense = {
-    _id: req.body._id ? ObjectId(req.body._id) : undefined,
-    event: req.body.event,
-    name: req.body.name,
-    cost: req.body.cost,
-    sponsoredBy: req.body.sponsoredBy
-  };
-
-  let events = await req.db.db('debtapp')
-  .collection('events')
-  .find()            
-  .collation({
-    locale: 'pl'
-  })
-  .sort()
-  .toArray();
-
-  let e = validateFormServerSide(req);
-  if (e.flag) {
-    res.render('newExpense', { title: 'New/Edit event', 
-    newExpense: newExpense, 
-    events: events,
-    errors: e.errMsgs });
-  }
-  else {
-    try {
-      if (newExpense._id) {
-        await req.db.db('debtapp').collection("expenses").replaceOne({ _id: newExpense._id }, newExpense);
-      } else {
-        await req.db.db('debtapp').collection("expenses").insertOne(newExpense);
-      }
-      res.redirect('/expenses/');
-
-    } catch (err) {
-      console.error(err);
-    }
-  }
-});
-
-
-// Delete loan
-router.get('/loan-delete/', async function (req, res, next) {
-  try {
-      let id = req.query.id;
-      await req.db.db('debtapp').collection("loans").findOneAndDelete({_id: ObjectId(id)});
-      res.redirect('/loans/');
-  } catch (err) {
-      console.error(err);
-  }
-  //next();
-});
-
-// Delete Event
-router.get('/event-delete/', async function (req, res, next) {
-  try {
-      let id = req.query.id;
-      await req.db.db('debtapp').collection("events").findOneAndDelete({_id: ObjectId(id)});
-      res.redirect('/events/');
-  } catch (err) {
-      console.error(err);
-  }
-  //next();
-});
-
-// Delete Expense
-router.get('/expense-delete/', async function (req, res, next) {
-  try {
-      let id = req.query.id;
-      await req.db.db('debtapp').collection("expenses").findOneAndDelete({_id: ObjectId(id)});
-      res.redirect('/expenses/');
-  } catch (err) {
-      console.error(err);
-  }
-  //next();
-});
-
-
-router.get('/newEvent/', function(req, res, next) {
-  res.render('newEvent', { title: 'Nowe Zdarzenie' });
-});
-
-router.get('/newLoan/', function(req, res, next) {
-  res.render('newLoan', { title: 'Nowa Pożyczka' });
-});
-
-//router.get('/newExpense/', function(req, res, next) {
-//  res.render('newExpense', { title: 'Nowy wydatek' });
-//});
-
-router.get('/events/', function(req, res, next) {
-  res.render('events', { title: 'Events' });
-});
-
-router.get('/loans/', function(req, res, next) {
-  res.render('loans', { title: 'Loans' });
-});
-
-router.get('/expenses/', function(req, res, next) {
-  res.render('expenses', { title: 'Expenses' });
-});
-
+//ROOT ------------------------------------------------------------------
 router.get('/index/', async function(req, res, next) {
+  res.render('index', { title: 'DebtApp'});
+});
+
+router.get('/', async function(req, res, next) {
   res.render('index', { title: 'DebtApp'});
 });
 
 module.exports = router;
 
+//HELPERS ----------------------------------------------------------------
 
 function validateFormServerSide(req){
   let errMsgs = _validateForm(req);

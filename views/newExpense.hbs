@@ -1,15 +1,15 @@
 <header class="masthead">
-<div align="center">
+  <div align="center">
     <form action="/newExpense/" method="post">
+
       {{#each errors}}
-        <label id='error-summary' class="alert alert-danger">{{this}}</label><br>
+      <label id='error-summary' class="alert alert-danger">{{this}}</label><br>
       {{/each}}
+
       <div class="form-group col-md-4">
         <label for="selectEvent">Event</label>
-        <input class="form-control text-muted" readonly 
-          type="text" name="event" value="{{newExpense.event}}"
-          id="event" placeholder="Pick a value below... "
-          required/>
+        <input class="form-control text-muted" readonly type="text" name="event" value="{{newExpense.event}}" id="event"
+          placeholder="Pick a value below... " required />
       </div>
 
       <div class="form-group col-md-4">
@@ -20,30 +20,23 @@
           {{/each}}
         </select>
       </div>
-      
+
       <div class="form-group col-md-4">
         <label for="expense">Expense</label>
-        <input type="text" class="form-control" 
-          value="{{newExpense.name}}" name="name" id="name"
-          placeholder="Expense name"
-          required>
+        <input type="text" class="form-control" value="{{newExpense.name}}" name="name" id="name"
+          placeholder="Expense name" required>
       </div>
 
       <div class="form-group col-md-4">
         <label for="expenseAmount">Cost</label>
-        <input type="text" class="form-control" 
-        value="{{newExpense.cost}}" 
-        name="cost" id="cost" placeholder="Amount"
-        pattern = "[0-9]{1,5}"
-        title = "only digits max. length 5 characters"
-        required>
+        <input type="text" class="form-control" value="{{newExpense.cost}}" name="cost" id="cost" placeholder="Amount"
+          pattern="[0-9]{1,5}" title="only digits max. length 5 characters" required>
       </div>
 
       <div class="form-group col-md-4">
         <label for="sponsoredBy">Who's sponsoring</label>
         <input type="text" class="form-control" readonly value="{{newExpense.sponsoredBy}}" name="sponsoredBy"
-          id="sponsoredBy" placeholder="Pick a value below... "
-          required/>
+          id="sponsoredBy" placeholder="Pick a value below... " required />
       </div>
 
       <div class="form-group col-md-4">
@@ -55,10 +48,10 @@
 
       <input type="hidden" type="text" name="_id" value="{{newExpense._id}}" />
       <button type="submit" class="btn btn-primary">Add expense</button>
-       <a class="btn btn-danger" href="/expenses/">Powrót </a>
+      <a class="btn btn-danger" href="/expenses/">Powrót </a>
     </form>
-   
-</div>
+
+  </div>
 </header>
 
 <script>

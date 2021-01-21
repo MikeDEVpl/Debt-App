@@ -1,5 +1,4 @@
 <header class="masthead">
-    <!-- loans section-->
     <section class="page-section" id="loans">
         <div class="container">
             <div class="text-center">
@@ -17,19 +16,19 @@
 
             <div class="row text-center" id="loansMainDiv">
                 {{#each loans}}
-                    <div class="col-md-4">
+                <div class="col-md-4">
 
-                        <span class="fa-stack fa-4x">
-                            <i class="fas fa-money-check-alt fa-stack-1x fa-inverse text-yellow"></i>
-                        </span>
+                    <span class="fa-stack fa-4x">
+                        <i class="fas fa-money-check-alt fa-stack-1x fa-inverse text-yellow"></i>
+                    </span>
 
-                        <h4 class='my-3'>{{name}} <span class="text-yellow"> {{amount}} zł </span></h4>
-                        <p class='text-muted'>{{returnDate}} {{paid}}</p>
-                        
-                        <a class="btn btn-info" href="newLoan/?id={{this._id}}">Edit</a>
-                        <a class="btn btn-danger" href="loan-delete/?id={{this._id}}">Delete</a>
-                        
-                    </div>
+                    <h4 class='my-3'>{{name}} <span class="text-yellow"> {{amount}} zł </span></h4>
+                    <p class='text-muted'>{{returnDate}} {{paid}}</p>
+
+                    <a class="btn btn-info" href="newLoan/?id={{this._id}}">Edit</a>
+                    <a class="btn btn-danger" href="loan-delete/?id={{this._id}}">Delete</a>
+
+                </div>
                 {{/each}}
             </div>
 

@@ -24,8 +24,10 @@
             </a>
             <div class="events-caption">
               <div class="events-caption-heading">{{name}}</div>
-              <div class="events-caption-subheading text-black-50">Event date: <span class="text-bold">{{date}}</span></div>
-              <div class="events-caption-subheading text-black-50">Participants: <span class="text-bold"> {{participants}} </div>
+              <div class="events-caption-subheading text-black-50">Event date: <span class="text-bold">{{date}}</span>
+              </div>
+              <div class="events-caption-subheading text-black-50">Participants: <span class="text-bold">
+                  {{participants}} </div>
               <a class="btn btn-info" href="newEvent/?id={{this._id}}">Edit</a>
               <a class="btn btn-info" href="expenses/?search={{this.name}}">Expenses</a>
               <a class="btn btn-danger" href="event-delete/?id={{this._id}}">Delete</a </div>
