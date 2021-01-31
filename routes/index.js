@@ -404,8 +404,6 @@ router.get('/reports/', async function(req, res, next) {
     loans: loans
   };
 
-//Zle dziala - bo nie gropuje eventów dla partycypanta
-
   //Report 2 - which user is participating in event
   const events = await req.db.db('debtapp')
   .collection('events')
